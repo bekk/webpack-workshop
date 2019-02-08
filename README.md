@@ -41,7 +41,7 @@ module.exports = {
 Her definerer `output.path` hvor vi ønsker at bundelen skal legges og `output.filename` definerer navnet.
 
 #### Oppgave
-Lag en webpack-konfig som går ut ifra `main.js` og lager en bundle med alle avhengigheter denne filen har. Endre `index.html` til å peke på bundlen som webpack har bygd for oss. Kjør `npm run build`.
+Lag en webpack-konfig som går ut ifra `main.js` og lager en bundle med alle avhengigheter denne filen har. Endre `index.html` til å peke på bundlen som webpack har bygd for oss. Kjør `npm run build`. Verifiser at du nå har fått en mappe til som heter dist og det inne denne ligger en js-fil som heter det du satte som filename i webpack-config filen din (feks. `my-first-webpack.bundle.js`.)
 Dersom vi nå åpner main.html i nettleseren vil vi se en velkomstmelding som også inkluderer tid på dagen.
 
 
