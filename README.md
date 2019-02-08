@@ -55,7 +55,7 @@ Eksempel på devserver oppsett:
 ```
     devServer: {
         publicPath: '/',
-        contentBase: './src'
+        contentBase: './src' 
     }
 ```
 
