@@ -7,7 +7,7 @@ Vi starter denne workshopen med det aller mest grunnleggende, hvordan webpack by
 
 ## Basic setup
 Før vi kommer i gang med webpack skal vi sette opp et minimalt oppsett som vi kan bygge videre fra. Sørg for at du har node og npm installert (https://nodejs.org/en/download/) og klon dette prosjektet: `git clone https://github.com/espehel/webpack-workshop.git`. Kjør ´npm install´.
-Prosjektet har kun 3 enkle filer `src/main.html`, `src/main.js` og `src/utils.js`. Åpne filen main.html direkte i en nettleser. 
+Prosjektet har kun 3 enkle filer `src/index.html`, `src/main.js` og `src/utils.js`. Åpne filen main.html direkte i en nettleser. 
 Da ser vi en velkomstmelding generert fra `src/main.js`.
 
 Vi ønsker også å inkludere tid på dagen i velkomstmeldingen.
