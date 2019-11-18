@@ -6,7 +6,7 @@ I denne workshopen skal vi ta utgangspunkt i webpack for å utforske hva som fak
 Vi starter denne workshopen med det aller mest grunnleggende, hvordan webpack bygger en _bundle_ basert på avhengighetene til en angitt fil. Videre vil vi se på ytterligere konfigurasjonsmuligheter, som hvordan vi kan dra nytte av Babel, less, og typescript, ved hjelp av _Loaders_ og _Plugins_. Vi kommer til å utforske forskjellen på produksjonsbygg og bygg best egnet for våre interne og lokale utviklingsmiljøer. Til slutt vil vi se på litt snacks som gjør hverdagen vår som utvikler litt mer behagelig.
 
 ## Basic setup
-Før vi kommer i gang med webpack skal vi sette opp et minimalt oppsett som vi kan bygge videre fra. Sørg for at du har node og npm installert (https://nodejs.org/en/download/) og klon dette prosjektet: `git clone https://github.com/espehel/webpack-workshop.git`. Kjør ´npm install´.
+Før vi kommer i gang med webpack skal vi sette opp et minimalt oppsett som vi kan bygge videre fra. Sørg for at du har node og npm installert (https://nodejs.org/en/download/) og klon dette prosjektet: `git clone https://github.com/espehel/webpack-workshop.git`. Kjør `npm install`.
 Prosjektet har kun 3 enkle filer `src/index.html`, `src/main.js` og `src/utils.js`. Åpne filen index.html direkte i en nettleser. 
 Da ser vi en velkomstmelding generert fra `src/main.js`.
 
