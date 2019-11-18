@@ -1,7 +1,7 @@
 # webpack-workshop
 
 ## Introduksjon
-I denne workshopen skal vi ta utgangspunkt i webpack for å utforske hva som faktisk skjer når man bygger en frontend. Det er ofte mange forskjellige prosesser koden gjennomgår og ved hjelp av webpack skal vi se på disse gradvis ved å sette opp vår egendefinerte konfigurasjon. Webpack 4 og Parcel gir mye av det vi setter opp manuelt i denne workshopen ut av boksen, men i reelle kundesituasjoner er det vanlig at man likevel tilføre konfigurasjon manuelt for å få ting til å fungere i kunden sitt miljø.
+I denne workshopen skal vi ta utgangspunkt i webpack for å utforske hva som faktisk skjer når man bygger en frontend. Det er ofte mange forskjellige prosesser koden gjennomgår og ved hjelp av webpack skal vi se på disse gradvis ved å sette opp vår egendefinerte konfigurasjon. Webpack 4 og Parcel gir mye av det vi setter opp manuelt i denne workshopen ut av boksen, men i reelle kundesituasjoner er det vanlig at man likevel må tilføre konfigurasjon manuelt for å få ting til å fungere i kunden sitt miljø.
 
 Vi starter denne workshopen med det aller mest grunnleggende, hvordan webpack bygger en _bundle_ basert på avhengighetene til en angitt fil. Videre vil vi se på ytterligere konfigurasjonsmuligheter, som hvordan vi kan dra nytte av Babel, less, og typescript, ved hjelp av _Loaders_ og _Plugins_. Vi kommer til å utforske forskjellen på produksjonsbygg og bygg best egnet for våre interne og lokale utviklingsmiljøer. Til slutt vil vi se på litt snacks som gjør hverdagen vår som utvikler litt mer behagelig.
 
