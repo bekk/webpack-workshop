@@ -48,7 +48,7 @@ Dersom vi nå åpner main.html i nettleseren vil vi se en velkomstmelding som og
 ### Dev-server
 Å verifisere at konfigurasjonen og koden fungerer kun ved å se at det konstrueres en bundle, for så å måtte finne html-filen og åpne denne i en nettleser, er ikke optimalt. Webpack tilbyr en dev-server som lar oss eksperimentere litt raskere.
 
-Installer webpack-dev-server: `npm install webpack-dev-server -D`. For at det skal være lettere å starte serveren kan det nok en gang være lurt å opprette et script i package.json, f.eks `"dev": "webpack-dev-server --config webpack.config.js"`. Hvis vi kjører dette scriptet ved å kalle `npm run dev` vil vi serve og se mappestrukturen til prosjektet vårt.
+Installer webpack-dev-server: `npm install webpack-dev-server -D`. For at det skal være lettere å starte serveren kan det nok en gang være lurt å opprette et script i package.json, f.eks `"dev": "webpack-dev-server --config webpack.config.js"`. Hvis vi kjører dette scriptet ved å kalle `npm run dev` og går til `http://localhost:8080` i nettleseren vil vi se en oversikt over mappestrukturen til prosjektet vårt.
 Dette skyldes at dev-serveren trenger litt hjelp til å finne ut av hvor den skal laste bundelen vår fra og hvor den statiske html-filen vår skal serves fra.
 `publicPath` definerer hvor bundelen ligger og `contentBase` definerer hvor vi skal hente statisk content fra.
 Eksempel på devserver oppsett:
