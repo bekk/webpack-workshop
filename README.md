@@ -48,7 +48,7 @@ Dersom vi nå åpner main.html i nettleseren vil vi se en velkomstmelding som og
 ### Dev-server
 Å verifisere at konfigurasjonen og koden fungerer kun ved å se at det konstrueres en bundle, for så å måtte finne html-filen og åpne denne i en nettleser, er ikke optimalt. Webpack tilbyr en dev-server som lar oss eksperimentere litt raskere.
 
-Installer webpack-dev-server: `npm install webpack-dev-server --save-dev`. For at det skal være lettere å starte serveren kan det nok en gang være lurt å definere et npm script som kjører kommandoen: `webpack-dev-server --config webpack.config.js`. Hvis vi kjører dette scriptet slik prosjektet vårt er definert nå vil vi serve og se mappestrukturen til prosjektet vårt.
+Installer webpack-dev-server: `npm install webpack-dev-server -D`. For at det skal være lettere å starte serveren kan det nok en gang være lurt å definere et npm script som kjører kommandoen: `webpack-dev-server --config webpack.config.js`. Hvis vi kjører dette scriptet slik prosjektet vårt er definert nå vil vi serve og se mappestrukturen til prosjektet vårt.
 Dette skyldes at dev-serveren trenger litt hjelp til å finne ut av hvor den skal laste bundelen vår fra og hvor den statiske html-filen vår skal serves fra.
 `publicPath` definerer hvor bundelen ligger og `contentBase` definerer hvor vi skal hente statisk content fra.
 Eksempel på devserver oppsett:
@@ -104,7 +104,7 @@ Raw loaderen tar tekstfiler og importerer innholdet rett inn i en string. Bruk r
 
 ### Less, css
 En ting vi kan bruke loaders til er å bygge CSS filer inn i bundlen vår. For å få til dette må vi installere loaderen vi ønsker å bruke:
-`npm install --save-dev css-loader`. Denne konfigurerer vi på samme måte som 'raw-loader' ved å definere en regel under module.rules:
+`npm install css-loader -D`. Denne konfigurerer vi på samme måte som 'raw-loader' ved å definere en regel under module.rules:
 ```
   module: {
     rules: [ { 
@@ -115,7 +115,7 @@ En ting vi kan bruke loaders til er å bygge CSS filer inn i bundlen vår. For �
   }
 ```
 css-loader vil kun legge CSS'en vår inn i en string, så vi trenger også `style-loader` som tar stringen vår med css, og putter det i en _style-tag_ som plasseres i `<head>`.
-Innstaller style-loader, `npm install --save-dev style-loader`. Siden den skal brukes for samme filer som css-loader, kan vi putte begge loaderne i et array:
+Innstaller style-loader, `npm install style-loader -D`. Siden den skal brukes for samme filer som css-loader, kan vi putte begge loaderne i et array:
 ```
   module: {
     rules: [ { 
@@ -132,7 +132,7 @@ Ved å inspisere siden, ser vi at css du har skrevet nå ligger i `<head>`.
 
 ### Babel
 En av de viktigste transformeringene for oss utviklere er at man kan skrive ny javascript kode som faktisk kjører på "alle" nettlesere. In comes Babel. Babel lar oss skrive ES6 og definere polyfills (kode som skal byttes ut med spesifikk annen kode) som blir transpilert til annen versjon av javascript som kan kjøre i et bredere spekter av nettlesere. Installer de følgende babel-pakkene før du fortsetter:
-`npm install @babel/core @babel/preset-env babel-loader --save-dev`. Babel core er hovedbiblioteket til babel, preset-env skal vi bruke til å konfigurere opp hva vi vil at babel skal gjøre og loaderen trenger vi for å integrere med webpack. Når disse pakkene er installert kan vi oppdatere webpack-konfigen vår til å inkludere vår nye loader slik:
+`npm install @babel/core @babel/preset-env babel-loader -D`. Babel core er hovedbiblioteket til babel, preset-env skal vi bruke til å konfigurere opp hva vi vil at babel skal gjøre og loaderen trenger vi for å integrere med webpack. Når disse pakkene er installert kan vi oppdatere webpack-konfigen vår til å inkludere vår nye loader slik:
 ```
 module: {
   rules: [
@@ -152,10 +152,10 @@ Som vanlig definerer vi `test` og `use`. Test er satt til alle javascript filer,
 ```
 
 #### Oppgave
-Sett opp og sjekk at babel faktisk fungerer. For å gjøre dette kan vi bruke et verktøy som heter ES-Check som kan installeres ved å kjøre `npm install es-check --save-dev`. Lag et npm script som peker programmet på output filen i bundelen din, f.eks: `es-check es5 ./dist/my-first-webpack.bundle.js`. Dersom du bruker babel loaderen når du bygger bundelen, burde den passere ES sjekken. Dersom du derimot ikke bruker den burde det kastes en feil.
+Sett opp og sjekk at babel faktisk fungerer. For å gjøre dette kan vi bruke et verktøy som heter ES-Check som kan installeres ved å kjøre `npm install es-check -D`. Lag et npm script som peker programmet på output filen i bundelen din, f.eks: `es-check es5 ./dist/my-first-webpack.bundle.js`. Dersom du bruker babel loaderen når du bygger bundelen, burde den passere ES sjekken. Dersom du derimot ikke bruker den burde det kastes en feil.
 
 ### Typescript
-I dag er det stadig mer populært å få typer inn i javascript verden. Den mest direkte måten å gjøre dette på er å introdusere Typescript eller Flow. Dette er ukomplisert nå som webpack-konfigen vår begynner å ta form. Man må selvfølgelig installere typescript med `npm install typescript` og deretter trenger vi en ts loader: `npm install --save-dev ts-loader`. Det vil også kreves en tsconfig.json som for øyeblikket kan være helt tom.
+I dag er det stadig mer populært å få typer inn i javascript verden. Den mest direkte måten å gjøre dette på er å introdusere Typescript eller Flow. Dette er ukomplisert nå som webpack-konfigen vår begynner å ta form. Man må selvfølgelig installere typescript med `npm install typescript` og deretter trenger vi en ts loader: `npm install ts-loader -D`. Det vil også kreves en tsconfig.json som for øyeblikket kan være helt tom.
 
 #### Oppgave
 Lag en typescript fil som eksporterer en funksjon, importer den i javascript filen du bruker som inngangspunkt og kall funksjonen fra javascript. 
@@ -165,7 +165,7 @@ Der loaders brukes til å gjennomføre en spesifikk transformasjon på visse mod
 
 ### Html Webpack Plugin
 Selv om html-filen som vi har laget selv fungerer bra, er det enklere om webpack genererer en for oss. HtmlWebpackPlugin genererer rett og slett en standard html-fil med en script tag som linker til bundlen vår, og putter den i output mappen.
-Installer HtmlWebpackPlugin(`npm i --save-dev html-webpack-plugin`) og legg til dette i webpack-konfigen:
+Installer HtmlWebpackPlugin(`npm i html-webpack-plugin -D`) og legg til dette i webpack-konfigen:
 ```
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -205,7 +205,7 @@ Vi kan se at biblioteket lodash tar veldig mye av den totale bundle størrelsen.
 
 
 ## React
-Ettersom react faggruppen er her må vi selvsagt leke litt med React. Ettersom vi allerede har et babel oppsett gående er det litt mindre som trengs å gjøre enn vanlig. Vi trenger selvsagt React: `npm install --save react react-dom`. Og vi må ha litt mer hjelp til Babel: `npm install --save-dev @babel/preset-react`. Denne pakken lar oss blant annet transformere jsx. 
+Ettersom react faggruppen er her må vi selvsagt leke litt med React. Ettersom vi allerede har et babel oppsett gående er det litt mindre som trengs å gjøre enn vanlig. Vi trenger selvsagt React: `npm install --save react react-dom`. Og vi må ha litt mer hjelp til Babel: `npm install @babel/preset-react -D`. Denne pakken lar oss blant annet transformere jsx. 
 
 #### Oppgave
 Lag en React component og rendrer denne i nettsiden din. Husk å koble React på et element i DOMen din.
@@ -277,7 +277,7 @@ getTimeOfDay().then(component => {
 #### Oppgave 
 Hent lodash dynamisk inn i getTimeOfDay komponenten og deretter bygg prosjektet med webpack for å se at `lodash` nå har blitt splittet ut i en egen bundle. 
 
-Siden import() returnerer et promise kan man også bruke async await for å hente importene ved hjelp av babel og Syntax-dynamic-import pluginen. Last ned pluginen med ´npm install --save-dev @babel/plugin-syntax-dynamic-import` og legg den inn i .babelrc filen din:
+Siden import() returnerer et promise kan man også bruke async await for å hente importene ved hjelp av babel og Syntax-dynamic-import pluginen. Last ned pluginen med ´npm install @babel/plugin-syntax-dynamic-import -D` og legg den inn i .babelrc filen din:
 
 ```
 {
