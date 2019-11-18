@@ -34,7 +34,7 @@ const path = require('path');
 module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'my-first-webpack.bundle.js'
+    filename: 'main.bundle.js'
   }
 };
 ```
