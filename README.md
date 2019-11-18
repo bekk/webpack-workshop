@@ -175,10 +175,8 @@ Raw loaderen tar tekstfiler og importerer innholdet rett inn i en string. Last r
 <details>
   <summary>🚨Løsningsforslag</summary>
 	
-```
-webpack.config.js
-```
-```js
+webpack.config.js:
+ ```js
 const path = require('path');
 
 module.exports = {
@@ -201,10 +199,7 @@ module.exports = {
 };
     
 ```
-
-```
-main.js
-```
+main.js:
 ```js
 import tekst from './other/tekstfil.txt'
 
@@ -231,7 +226,7 @@ En ting vi kan bruke loaders til er å bygge CSS filer inn i bundlen vår. For �
   }
 ```
 css-loader vil kun legge CSS'en vår inn i en string, så vi trenger også `style-loader` som tar stringen vår med css, og putter det i en _style-tag_ som plasseres i `<head>`.
-Innstaller style-loader, `npm install style-loader -D`. Siden den skal brukes for samme filer som css-loader, kan vi putte begge loaderne i et array:
+Installer style-loader ved `npm install style-loader -D`. Siden den skal brukes for samme filer som css-loader, kan vi putte begge loaderne i et array:
 ```
   module: {
     rules: [ { 
@@ -245,6 +240,20 @@ Innstaller style-loader, `npm install style-loader -D`. Siden den skal brukes fo
 #### 🏆Oppgave
 Legg til _css-loader_ og _style-loader_ i webpack-konfigen, lag deretter en .css fil og importer denne i javascripten din. Verifiser at det funger som det skal ved å legge til noen css-regler, eksempler på dette kan være _background-color_, _color_, _font-size_ eller _text-align_.  
 Ved å inspisere siden, ser vi at css du har skrevet nå ligger i `<head>`.
+
+### Bilder
+`npm install --save-dev file-loader`
+```
+module: {
+    rules: [ { 
+        test: /\.(png|svg|jpg|gif)$/,
+        use: [
+          'file-loader',
+         ],
+       }
+    ]
+  }
+```
 
 ### Babel
 En av de viktigste transformeringene for oss utviklere er at man kan skrive ny javascript kode som faktisk kjører på "alle" nettlesere. In comes Babel. Babel lar oss skrive ES6 og definere polyfills (kode som skal byttes ut med spesifikk annen kode) som blir transpilert til annen versjon av javascript som kan kjøre i et bredere spekter av nettlesere. Installer de følgende babel-pakkene før du fortsetter:
