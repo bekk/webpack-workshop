@@ -238,7 +238,7 @@ Installer style-loader ved `npm install style-loader -D`. Siden den skal brukes 
 ```
 
 #### 🏆Oppgave
-Legg til _css-loader_ og _style-loader_ i webpack-konfigen, importer derretter css-fila fra mappen _other_ inn i javascripten din. Verifiser dev-server har funnet css-fila og at nettsiden nå har fått litt styling.  
+Legg til _css-loader_ og _style-loader_ i webpack-konfigen, importer derretter css-fila fra mappen _other_ inn i javascripten din. Verifiser at dev-server har funnet css-fila og at nettsiden nå har fått litt styling.  
 Ved å inspisere siden i consolet, ser vi at css'en også ligger i `<head>`.
 
 <details>
@@ -289,8 +289,8 @@ module: {
         test: /\.(png|svg|jpg|gif)$/,
         use: [
           'file-loader',
-         ],
-       }
+        ],
+      }
     ]
   }
 ```
@@ -364,7 +364,69 @@ Som vanlig definerer vi `test` og `use`. Test er satt til alle javascript filer,
 ```
 
 #### 🏆Oppgave
-Sett opp og sjekk at babel faktisk fungerer. For å gjøre dette kan vi bruke et verktøy som heter ES-Check som kan installeres ved å kjøre `npm install es-check -D`. Lag et npm script som peker programmet på output filen i bundelen din, f.eks: `es-check es5 ./dist/my-first-webpack.bundle.js`. Dersom du bruker babel loaderen når du bygger bundelen, burde den passere ES sjekken. Dersom du derimot ikke bruker den burde det kastes en feil.
+Sett opp og sjekk at babel faktisk fungerer. For å gjøre dette kan vi bruke et verktøy som heter ES-Check som kan installeres ved å kjøre `npm install es-check -D`. Lag et npm script som peker programmet på output filen i bundelen din, f.eks: `"check": "es-check es5 ./dist/main.bundle.js"`. Dersom du bruker babel loaderen når du bygger bundelen, burde den passere ES sjekken. Dersom du derimot ikke bruker den burde det kastes en feil.
+
+<details>
+  <summary>🚨Løsningsforslag</summary>
+	
+webpack.config.js:
+ ```js
+const path = require('path');
+
+module.exports = {
+  entry: './src/main.js',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'main.bundle.js'
+  },
+  devServer: {
+    publicPath: '/dist/',
+    contentBase: './src'
+  },
+  module: {
+    rules: [ { 
+          test: /\.txt$/,
+          use: 'raw-loader'
+       },
+       { 
+	  test: /\.css$/,
+	  use: ['style-loader', 'css-loader']
+       },
+       {
+	  test: /\.(png|svg|jpg|gif)$/,
+          use: ['file-loader'],
+       },
+       {
+	  test: /\.js$/,
+	  exclude: /(node_modules)/,
+	  use: 'babel-loader'
+       }
+    ]
+  }
+};
+    
+```
+.babelrc i rotmappa:
+```js
+{
+  "presets": ["@babel/preset-env"]
+}
+```
+package.json
+```js
+"scripts": {
+    "build": "webpack --config webpack.config.js",
+    "dev": "webpack-dev-server --config webpack.config.js",
+    "check": "es-check es5 ./dist/main.bundle.js"
+  },
+
+```
+prøv å kjøre `npm run check`--> får feil.
+Kjør `npm run build`
+Kjør `npm run check`--> success 
+
+</details>
+<br/>
 
 ### Typescript
 I dag er det stadig mer populært å få typer inn i javascript verden. Den mest direkte måten å gjøre dette på er å introdusere Typescript eller Flow. Dette er ukomplisert nå som webpack-konfigen vår begynner å ta form. Man må selvfølgelig installere typescript med `npm install typescript` og deretter trenger vi en ts loader: `npm install ts-loader -D`. Det vil også kreves en tsconfig.json som for øyeblikket kan være helt tom.
