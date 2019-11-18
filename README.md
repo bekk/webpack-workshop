@@ -15,7 +15,7 @@ Dette vil vi løse ved å importere hjelpefunksjonen `getTimeOfDay()` fra `src/u
 Dette kommer dessverre til å feile siden nettleseren ikke forstår avhengigheten vi prøver å skape mellom `main.js` og `utils.js`. Dette kan vi løse ved å få webpack til å lage en bundle av de to javascript filene vi trenger.
 
 Det første vi gjøre er å hente webpack fra NPM. Vi henter også webpack-cli, slik at vi kan bygge koden vår fra kommandolinja.
-Kjør `npm i -d webpack webpack-cli`. 
+Kjør `npm i webpack webpack-cli -D`. 
 For å bygge filene bruker vi et npm script, som starter webpack og gir den en konfig. 
 Legg inn følgende under `script` i `package.json`: `"build": "webpack --config webpack.config.js"`. Opprett filen `webpack.config.js` i rotmappa. I neste avsnitt forklarer vi hvordan vi setter opp denne filen, slik at vi endelig kan vise velkomstmeldingen vår.
 
