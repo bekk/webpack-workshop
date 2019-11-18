@@ -71,9 +71,9 @@ const path = require('path');
 
 module.exports = {
     entry: './src/main.js',
-  	output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'main.bundle.js'
+    output: {
+    	path: path.resolve(__dirname, 'dist'),
+	filename: 'main.bundle.js'
     },
 };
     
@@ -81,6 +81,7 @@ module.exports = {
 
 </details>
 <br/>
+
 ### Dev-server
 Å verifisere at konfigurasjonen og koden fungerer kun ved å se at det konstrueres en bundle, for så å måtte finne html-filen og åpne denne i en nettleser, er ikke optimalt. Webpack tilbyr en dev-server som lar oss eksperimentere litt raskere.
 
@@ -88,7 +89,7 @@ Installer webpack-dev-server: `npm install webpack-dev-server -D`. For at det sk
 Dette skyldes at dev-serveren trenger litt hjelp til å finne ut av hvor den skal laste bundelen vår fra og hvor den statiske html-filen vår skal serves fra.
 
 Vi konfigurer dev-serveren i webpack.config.js-fila. `publicPath` definerer hvor bundelen ligger og `contentBase` definerer hvor vi skal hente statisk content fra.
-Eksempel på devserver oppsett:
+Eksempel på dev-server oppsett:
 ```
     devServer: {
         publicPath: '/',
@@ -96,34 +97,33 @@ Eksempel på devserver oppsett:
     }
 ```
 
-#### Oppgave
+#### 🏆Oppgave
 Sett opp dev-serveren slik at den får med seg endringer både i javascript og htmlen vår. Refresh nettleseren (localhost-fanen) og se at du igjen får velkomstmeldingen.
 
 <details>
   <summary>🚨Løsningsforslag</summary>
 
-```js
+```json
 const path = require('path');
 
 module.exports = {
-	entry: './src/main.js',
-  	output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'main.bundle.js'
-    },
-    devServer: {
-		publicPath: '/dist/',
-		contentBase: './src'
-	},
+  entry: './src/main.js',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'main.bundle.js'
+  },
+  devServer: {
+    publicPath: '/dist/',
+    contentBase: './src'
+  },
 };
     
 ```
-
 </details>
 <br/>
 
 ### Developmentbygg og produksjonsbygg
-Webpack gir oss optimalisering basert på om et bygg skal brukes under utvikling av dev-serveren, eller om det skal havne i den endelige produksjonsbundelen. Et developmentbygg fokuserer på rask byggehastighet, mens et produksjonsbygg har som mål å lage en liten bundle.
+Webpack gir oss optimalisering basert på om et bygg skal brukes under utvikling (av dev-serveren), eller om det skal havne i den endelige produksjonsbundelen. Et developmentbygg fokuserer på rask byggehastighet, mens et produksjonsbygg har som mål å lage en liten bundle.
 
 Vi styrer dette ved å sette `mode` til enten _production_, _development_ eller _none_ i konfig filen.
 ```
@@ -133,9 +133,19 @@ module.exports = {
 ```
 Man kan også variere byggmodus som et CLI argument `webpack --mode=production`.
 
-#### Oppgave
+#### 🏆Oppgave
 Prøv å bygg både med `mode: 'production'` og `mode: 'development'`, åpne bundlen og se på forskjellen.
 Etter det, gjør slik at dev-serveren bruker development, mens bundlen vi bygger bruker production.
+
+<details>
+  <summary>TODOOOO🚨🚨🚨Løsningsforslag</summary>
+
+```json
+
+    
+```
+</details>
+<br/>
 
 ## Loaders
 Webpack forstår i utgangspunktet kun javascript, men ved hjelp av loaders kan vi få webpack til å prosessere forskjellige typer filer. Disse blir da konvertert til moduler som legges til i webpack sitt dependency tre.
@@ -159,8 +169,48 @@ module.exports = {
 Her setter man en `rules` property som tar en liste med objekter hvor hvert objektet skal ha de obligatoriske feltene `Test` og `Use`.
 Hver gang webpack kommer over en path som viser seg å være en '.txt' så skal man sende denne gjennom 'raw-loader' slik at den kan transformeres før den legges til bundelen. I de neste seksjonene skal vi sette opp litt forskjellige loaders som er veldig vanlige å bruke.
 
-#### Oppgave
+#### 🏆Oppgave
 Raw loaderen tar tekstfiler og importerer innholdet rett inn i en string. Bruk raw loaderen til å importere en tekstfil som en streng og bruk denne i javascripten deres.
+
+<details>
+  <summary>🚨Løsningsforslag</summary>
+`webpack.config.js`
+```json
+const path = require('path');
+
+module.exports = {
+  entry: './src/main.js',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'main.bundle.js'
+  },
+  devServer: {
+    publicPath: '/dist/',
+    contentBase: './src'
+  },
+  module: {
+    rules: [ { 
+          test: /\.txt$/,
+          use: 'raw-loader'
+       }
+    ]
+  }
+};
+    
+```
+`main.js`
+```js
+import tekst from './other/tekstfil.txt'
+
+const app = document.getElementById('app');
+
+const tekstfil = document.createElement('p')
+tekstfil.appendChild(document.createTextNode(tekst))
+app.appendChild(tekstfil);
+```
+
+</details>
+<br/>
 
 ### Less, css
 En ting vi kan bruke loaders til er å bygge CSS filer inn i bundlen vår. For å få til dette må vi installere loaderen vi ønsker å bruke:
@@ -186,7 +236,7 @@ Innstaller style-loader, `npm install style-loader -D`. Siden den skal brukes fo
   }
 ```
 
-#### Oppgave
+#### 🏆Oppgave
 Legg til _css-loader_ og _style-loader_ i webpack-konfigen, lag deretter en .css fil og importer denne i javascripten din. Verifiser at det funger som det skal ved å legge til noen css-regler, eksempler på dette kan være _background-color_, _color_, _font-size_ eller _text-align_.  
 Ved å inspisere siden, ser vi at css du har skrevet nå ligger i `<head>`.
 
@@ -211,13 +261,13 @@ Som vanlig definerer vi `test` og `use`. Test er satt til alle javascript filer,
 }
 ```
 
-#### Oppgave
+#### 🏆Oppgave
 Sett opp og sjekk at babel faktisk fungerer. For å gjøre dette kan vi bruke et verktøy som heter ES-Check som kan installeres ved å kjøre `npm install es-check -D`. Lag et npm script som peker programmet på output filen i bundelen din, f.eks: `es-check es5 ./dist/my-first-webpack.bundle.js`. Dersom du bruker babel loaderen når du bygger bundelen, burde den passere ES sjekken. Dersom du derimot ikke bruker den burde det kastes en feil.
 
 ### Typescript
 I dag er det stadig mer populært å få typer inn i javascript verden. Den mest direkte måten å gjøre dette på er å introdusere Typescript eller Flow. Dette er ukomplisert nå som webpack-konfigen vår begynner å ta form. Man må selvfølgelig installere typescript med `npm install typescript` og deretter trenger vi en ts loader: `npm install ts-loader -D`. Det vil også kreves en tsconfig.json som for øyeblikket kan være helt tom.
 
-#### Oppgave
+#### 🏆Oppgave
 Lag en typescript fil som eksporterer en funksjon, importer den i javascript filen du bruker som inngangspunkt og kall funksjonen fra javascript. 
 
 ## Plugins
@@ -237,7 +287,7 @@ module.exports = {
 ```
 Dersom vi nå bygger prosjektet vårt med `npm run build`, ser vi at en html-fil også har dukket opp i mappen `/dist`.
 
-#### Oppgave
+#### 🏆Oppgave
 Få dev-serveren til å benytte den genererte html-filen.
 
 Dersom dev-serveren nå benytter den genererte filen, vil vi oppleve at javascript feiler, ettersom den ser etter et element i DOM'en som ikke finnes. Vi løser dette ved å sette html-filen vår som en template. Da vil webpack ta utgangspunkt i denne, og legge til en referanse i javascript-bundlen.
@@ -267,7 +317,7 @@ Vi kan se at biblioteket lodash tar veldig mye av den totale bundle størrelsen.
 ## React
 Ettersom react faggruppen er her må vi selvsagt leke litt med React. Ettersom vi allerede har et babel oppsett gående er det litt mindre som trengs å gjøre enn vanlig. Vi trenger selvsagt React: `npm install --save react react-dom`. Og vi må ha litt mer hjelp til Babel: `npm install @babel/preset-react -D`. Denne pakken lar oss blant annet transformere jsx. 
 
-#### Oppgave
+#### 🏆Oppgave
 Lag en React component og rendrer denne i nettsiden din. Husk å koble React på et element i DOMen din.
 
 ## Code splitting
@@ -291,7 +341,7 @@ Dersom man har fler entry point som beskrevet over er det fler muligheter for å
 * `Promise-loader`: Lignende Bundle-loader men bruker promises. Les mer: https://github.com/gaearon/promise-loader
 
 
-#### Oppgave:
+#### 🏆Oppgave:
 Opprett en html-fil som importerer en tilhørende js fil. Legg html filen ved siden av den eksisterende index.html og js filen under src-mappen.
 
 Prøv en enkel kodesplitting og sjekk at du får to bundles. 
@@ -334,7 +384,7 @@ getTimeOfDay().then(component => {
    // gjør noe med component
 })
 ```
-#### Oppgave 
+#### 🏆Oppgave 
 Hent lodash dynamisk inn i getTimeOfDay komponenten og deretter bygg prosjektet med webpack for å se at `lodash` nå har blitt splittet ut i en egen bundle. 
 
 Siden import() returnerer et promise kan man også bruke async await for å hente importene ved hjelp av babel og Syntax-dynamic-import pluginen. Last ned pluginen med ´npm install @babel/plugin-syntax-dynamic-import -D` og legg den inn i .babelrc filen din:
