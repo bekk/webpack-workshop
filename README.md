@@ -140,7 +140,7 @@ Etter det, gjør slik at dev-serveren bruker development, mens bundlen vi bygger
 <details>
   <summary>TODOOOO🚨🚨🚨Løsningsforslag</summary>
 
-```json
+```js
 
     
 ```
@@ -175,8 +175,10 @@ Raw loaderen tar tekstfiler og importerer innholdet rett inn i en string. Last r
 <details>
   <summary>🚨Løsningsforslag</summary>
 	
-<p>webpack.config.js</p>
-```json
+```
+webpack.config.js
+```
+```js
 const path = require('path');
 
 module.exports = {
@@ -199,7 +201,10 @@ module.exports = {
 };
     
 ```
-<p>main.js</p>
+
+```
+main.js
+```
 ```js
 import tekst from './other/tekstfil.txt'
 
