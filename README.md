@@ -264,7 +264,7 @@ module.exports = {
           use: 'raw-loader'
        },
        { 
-	  test: /\.css$/,
+          test: /\.css$/,
 	  use: ['style-loader', 'css-loader']
        },
     ]
@@ -321,12 +321,12 @@ module.exports = {
           use: 'raw-loader'
        },
        { 
-	  test: /\.css$/,
+          test: /\.css$/,
 	  use: ['style-loader', 'css-loader']
        },
        {
-	  test: /\.(png|svg|jpg|gif)$/,
-          use: ['file-loader'],
+          test: /\.(png|svg|jpg|gif)$/,
+	  use: ['file-loader'],
        },
     ]
   }
@@ -389,15 +389,15 @@ module.exports = {
           use: 'raw-loader'
        },
        { 
-	  test: /\.css$/,
+          test: /\.css$/,
 	  use: ['style-loader', 'css-loader']
        },
        {
-	  test: /\.(png|svg|jpg|gif)$/,
-          use: ['file-loader'],
+          test: /\.(png|svg|jpg|gif)$/,
+	  use: ['file-loader'],
        },
        {
-	  test: /\.js$/,
+          test: /\.js$/,
 	  exclude: /(node_modules)/,
 	  use: 'babel-loader'
        }
@@ -422,7 +422,9 @@ package.json
 
 ```
 prøv å kjøre `npm run check`--> får feil.
+<br />
 Kjør `npm run build`
+<br />
 Kjør `npm run check`--> success 
 
 </details>
