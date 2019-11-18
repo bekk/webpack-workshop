@@ -7,7 +7,7 @@ Vi starter denne workshopen med det aller mest grunnleggende, hvordan webpack by
 
 ## Basic setup
 Før vi kommer i gang med webpack skal vi sette opp et minimalt oppsett som vi kan bygge videre fra. Sørg for at du har node og npm installert (https://nodejs.org/en/download/) og klon dette prosjektet: `git clone https://github.com/bekk/webpack-workshop.git`. Kjør `npm install`.
-Prosjektet har kun 3 enkle filer `src/index.html`, `src/main.js` og `src/utils.js`. Åpne filen index.html direkte i en nettleser. 
+Prosjektet har kun 3 enkle filer `src/index.html`, `src/main.js` og `src/utils.js`. Åpne filen `index.html` direkte i en nettleser. 
 Da ser vi en velkomstmelding generert fra `src/main.js`.
 
 Vi ønsker også å inkludere tid på dagen i velkomstmeldingen.
@@ -34,8 +34,7 @@ greetingContent.appendChild(document.createTextNode('Håper du har en fin' + get
 </details>
 <br/>
 
-### Installere webpack
-Det første vi gjør er å hente webpack fra NPM. Vi henter også webpack-cli, slik at vi kan bygge koden vår fra kommandolinja.
+Når vi nå har fått denne feilmeldingen skal sette opp webpack i prosjektet vårt. Det første vi gjør er å hente webpack fra NPM. Vi henter også webpack-cli, slik at vi kan bygge koden vår fra kommandolinja.
 Kjør `npm i webpack webpack-cli -D`. 
 For å bygge filene bruker vi et npm script, som starter webpack og gir den en konfig. 
 Legg inn følgende under `script` i `package.json`: `"build": "webpack --config webpack.config.js"`. Opprett filen `webpack.config.js` i rotmappa. I neste avsnitt forklarer vi hvordan vi setter opp denne filen, slik at vi endelig kan vise velkomstmeldingen vår.
