@@ -11,22 +11,43 @@ Prosjektet har kun 3 enkle filer `src/index.html`, `src/main.js` og `src/utils.j
 Da ser vi en velkomstmelding generert fra `src/main.js`.
 
 Vi ønsker også å inkludere tid på dagen i velkomstmeldingen.
-Dette vil vi løse ved å importere hjelpefunksjonen `getTimeOfDay()` fra `src/utils.js` og kalle denne.
+Dette vil vi løse ved å importere hjelpefunksjonen `getTimeOfDay()`, fra `src/utils.js`, inn til `main.js` og kalle funksjonen.
 Dette kommer dessverre til å feile siden nettleseren ikke forstår avhengigheten vi prøver å skape mellom `main.js` og `utils.js`. Dette kan vi løse ved å få webpack til å lage en bundle av de to javascript filene vi trenger.
 
-Det første vi gjøre er å hente webpack fra NPM. Vi henter også webpack-cli, slik at vi kan bygge koden vår fra kommandolinja.
+#### 🏆Oppgave
+Legg til rette for å bruke `getTimeOfDay()` i velkomstmeldingen ved å importere den fra `src/utils.js`, inn til `main.js`. Bruk den i velkomstmeldingen som vises, refresh `index.html` og verifiser at du får en feilmelding. Feilmeldingen går ut på at nettleseren ikke forstår import av fil, og gir dermed `syntaxError`. 
+
+<details>
+  <summary>🚨Løsningsforslag</summary>
+
+```js
+import { getTimeOfDay } from './utils'
+
+  *
+  *
+  *
+  
+greetingContent.appendChild(document.createTextNode('Håper du har en fin' + getTimeOfDay()));
+    
+```
+
+</details>
+<br/>
+
+### Installere webpack
+Det første vi gjør er å hente webpack fra NPM. Vi henter også webpack-cli, slik at vi kan bygge koden vår fra kommandolinja.
 Kjør `npm i webpack webpack-cli -D`. 
 For å bygge filene bruker vi et npm script, som starter webpack og gir den en konfig. 
 Legg inn følgende under `script` i `package.json`: `"build": "webpack --config webpack.config.js"`. Opprett filen `webpack.config.js` i rotmappa. I neste avsnitt forklarer vi hvordan vi setter opp denne filen, slik at vi endelig kan vise velkomstmeldingen vår.
 
 ### Entry og Output
-Når webpack skal bygge en bundle starter den med å se på én fil og basert på denne filen bygger man en avhengighetsgraf. Denne grafen brukes til å finne ut av hvilke andre moduler og biblioteker man er avhengig av. I webpack 4 er default pathen `./src/index.js`, men det er flere måter man kan konfigurere dette på avhengig av hva man er ute etter. Dersom man kun ønsker et annet entry point kan man skrive:
+Når webpack skal bygge en bundle starter den med å se på én fil og basert på denne filen bygger man en avhengighetsgraf. Denne grafen brukes til å finne ut av hvilke andre moduler og biblioteker man er avhengig av. I webpack 4 er default pathen `./src/index.js`, men det er flere måter man kan konfigurere dette på avhengig av hva man er ute etter. Dersom man ønsker et annet entry point kan man skrive:
 ```
 module.exports = {
   entry: './path/to/my/entry/file.js'
 };
 ```
-Output definerer hvor man ønsker at webpack skal legge bundelen som produseres og hvordan filene skal navngis. Denne defaulter til `./dist/main.js` for hovedfilen og `./dist` for alle andre genererte filer. Dette kan konfigureres ved å definere et output objekt i webpack-konfigen:
+Output definerer hvor man ønsker at webpack skal legge bundelen som produseres og hvordan filene skal navngis. Denne defaulter til `./dist/main.js` for hovedfilen og `./dist` for alle andre genererte filer. Dette kan konfigureres ved å definere et annet navn på output objekt i webpack-konfigen:
 
 ```
 const path = require('path');
@@ -34,14 +55,14 @@ const path = require('path');
 module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'main.bundle.js'
+    filename: 'my-first-webpack.bundle.js'
   }
 };
 ```
 Her definerer `output.path` hvor vi ønsker at bundelen skal legges og `output.filename` definerer navnet.
 
 #### 🏆Oppgave
-Lag en webpack-konfig som går ut ifra `main.js` og lager en bundle med alle avhengigheter denne filen har. Endre `index.html` til å peke på bundlen som webpack har bygd for oss. Kjør `npm run build`. Verifiser at du nå har fått en mappe til som heter dist og at det inni denne ligger en js-fil som heter det du satte som filename i webpack-config filen din (feks. `my-first-webpack.bundle.js`.)
+Lag en webpack-konfig som går ut ifra `main.js` og lager en bundle med alle avhengigheter denne filen har. Endre `index.html` til å peke på bundlen som webpack har bygd for oss. Kjør `npm run build`. Verifiser at du nå har fått en mappe til som heter dist og at det inni denne ligger en js-fil som heter det du satte som filename i webpack-config filen din (feks. `main.bundle.js`.)
 Dersom vi nå åpner `index.html` i nettleseren vil vi se en velkomstmelding som også inkluderer tid på dagen.
 
 <details>
@@ -54,7 +75,7 @@ module.exports = {
     entry: './src/main.js',
   	output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'my-first-webpack.bundle.js'
+        filename: 'main.bundle.js'
     },
 };
     
