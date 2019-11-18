@@ -103,7 +103,7 @@ Sett opp dev-serveren slik at den får med seg endringer både i javascript og h
 <details>
   <summary>🚨Løsningsforslag</summary>
 
-```json
+```js
 const path = require('path');
 
 module.exports = {
@@ -170,11 +170,12 @@ Her setter man en `rules` property som tar en liste med objekter hvor hvert obje
 Hver gang webpack kommer over en path som viser seg å være en '.txt' så skal man sende denne gjennom 'raw-loader' slik at den kan transformeres før den legges til bundelen. I de neste seksjonene skal vi sette opp litt forskjellige loaders som er veldig vanlige å bruke.
 
 #### 🏆Oppgave
-Raw loaderen tar tekstfiler og importerer innholdet rett inn i en string. Bruk raw loaderen til å importere en tekstfil som en streng og bruk denne i javascripten deres.
+Raw loaderen tar tekstfiler og importerer innholdet rett inn i en string. Last raw loaderen ned ved å kjøre: `npm install raw-loader --save` og bruk den til å importere en tekstfil som en streng i javascripten deres.
 
 <details>
   <summary>🚨Løsningsforslag</summary>
-`webpack.config.js`
+	
+<p>webpack.config.js</p>
 ```json
 const path = require('path');
 
@@ -198,7 +199,7 @@ module.exports = {
 };
     
 ```
-`main.js`
+<p>main.js</p>
 ```js
 import tekst from './other/tekstfil.txt'
 
