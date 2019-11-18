@@ -170,7 +170,7 @@ Her setter man en `rules` property som tar en liste med objekter hvor hvert obje
 Hver gang webpack kommer over en path som viser seg å være en '.txt' så skal man sende denne gjennom 'raw-loader' slik at den kan transformeres før den legges til bundelen. I de neste seksjonene skal vi sette opp litt forskjellige loaders som er veldig vanlige å bruke.
 
 #### 🏆Oppgave
-Raw loaderen tar tekstfiler og importerer innholdet rett inn i en string. Last raw loaderen ned ved å kjøre: `npm install raw-loader --save` og bruk den til å importere en tekstfil som en streng i javascripten deres.
+Raw loaderen tar tekstfiler og importerer innholdet rett inn i en string. Last raw loaderen ned ved å kjøre: `npm install raw-loader --save` og bruk den til å importere en tekstfila fom ligger i mappen _other_ som en streng i javascripten deres.
 
 <details>
   <summary>🚨Løsningsforslag</summary>
@@ -213,7 +213,7 @@ app.appendChild(tekstfil);
 </details>
 <br/>
 
-### Less, css
+### CSS
 En ting vi kan bruke loaders til er å bygge CSS filer inn i bundlen vår. For å få til dette må vi installere loaderen vi ønsker å bruke:
 `npm install css-loader -D`. Denne konfigurerer vi på samme måte som 'raw-loader' ved å definere en regel under module.rules:
 ```
@@ -238,11 +238,51 @@ Installer style-loader ved `npm install style-loader -D`. Siden den skal brukes 
 ```
 
 #### 🏆Oppgave
-Legg til _css-loader_ og _style-loader_ i webpack-konfigen, lag deretter en .css fil og importer denne i javascripten din. Verifiser at det funger som det skal ved å legge til noen css-regler, eksempler på dette kan være _background-color_, _color_, _font-size_ eller _text-align_.  
-Ved å inspisere siden, ser vi at css du har skrevet nå ligger i `<head>`.
+Legg til _css-loader_ og _style-loader_ i webpack-konfigen, importer derretter css-fila fra mappen _other_ inn i javascripten din. Verifiser dev-server har funnet css-fila og at nettsiden nå har fått litt styling.  
+Ved å inspisere siden i consolet, ser vi at css'en også ligger i `<head>`.
+
+<details>
+  <summary>🚨Løsningsforslag</summary>
+	
+webpack.config.js:
+ ```js
+const path = require('path');
+
+module.exports = {
+  entry: './src/main.js',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'main.bundle.js'
+  },
+  devServer: {
+    publicPath: '/dist/',
+    contentBase: './src'
+  },
+  module: {
+    rules: [ { 
+          test: /\.txt$/,
+          use: 'raw-loader'
+       },
+       { 
+	  test: /\.css$/,
+	  use: ['style-loader', 'css-loader']
+       },
+    ]
+  }
+};
+    
+```
+main.js:
+```js
+import './other/style.css'
+```
+</details>
+<br/>
 
 ### Bilder
-`npm install --save-dev file-loader`
+
+Bilder er ofte en del av en web-applikasjon. Får å hente inn bilder trenger vi file loader som lastes ned ved hjelp av: `npm install file-loader -D`. I CSS avsnittet over viste vi at dersom vi skulle bruke forskjellige loadere på de samme filene kunne vi legge det til i arrayet vi gir til `use`. File loader derimot bruker samme loader på fler fil-typer. Vi må derfor endre `test`-propertien til å teste på flere typer fil-endelser som vist under.
+
 ```
 module: {
     rules: [ { 
@@ -254,6 +294,53 @@ module: {
     ]
   }
 ```
+
+#### 🏆Oppgave
+Legg til file-loader i webpack-konfigen, hent bilder clapping.jpg fra mappen _other_ inn i javascripten din. Verifiser at du får vist bildet.
+
+<details>
+  <summary>🚨Løsningsforslag</summary>
+	
+webpack.config.js:
+ ```js
+const path = require('path');
+
+module.exports = {
+  entry: './src/main.js',
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'main.bundle.js'
+  },
+  devServer: {
+    publicPath: '/dist/',
+    contentBase: './src'
+  },
+  module: {
+    rules: [ { 
+          test: /\.txt$/,
+          use: 'raw-loader'
+       },
+       { 
+	  test: /\.css$/,
+	  use: ['style-loader', 'css-loader']
+       },
+       {
+	  test: /\.(png|svg|jpg|gif)$/,
+          use: ['file-loader'],
+       },
+    ]
+  }
+};
+    
+```
+main.js:
+```js
+const img = document.createElement("img");
+img.src = "./other/clapping.jpg";
+app.appendChild(img);
+```
+</details>
+<br/>
 
 ### Babel
 En av de viktigste transformeringene for oss utviklere er at man kan skrive ny javascript kode som faktisk kjører på "alle" nettlesere. In comes Babel. Babel lar oss skrive ES6 og definere polyfills (kode som skal byttes ut med spesifikk annen kode) som blir transpilert til annen versjon av javascript som kan kjøre i et bredere spekter av nettlesere. Installer de følgende babel-pakkene før du fortsetter:
