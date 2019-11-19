@@ -138,11 +138,31 @@ Prøv å bygg både med `mode: 'production'` og `mode: 'development'`, åpne bun
 Etter det, gjør slik at dev-serveren bruker development, mens bundlen vi bygger bruker production.
 
 <details>
-  <summary>TODOOOO🚨🚨🚨Løsningsforslag</summary>
+  <summary>🚨Løsningsforslag</summary>
 
+webpack.config.js
 ```js
+module.exports = {
+	entry: './src/main.js',
+  	output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'main.bundle.js'
+    },
+    devServer: {
+	publicPath: './dist/',
+	contentBase: './src'
+    },
+    mode: 'development',  //eller mode: 'production'
+}
+```
+Kjør npm run build og så se på f.eks størrelsen på filen for hver "mode" dere bygger og åpne opp filen for å se hvordan innholdet i bundelen ser ut for hver mode.
 
-    
+Package.json
+```js
+"scripts": {
+    "build": "webpack --mode=production --config webpack.config.js",
+    "dev": "webpack-dev-server --mode=development --config webpack.config.js",
+  },
 ```
 </details>
 <br/>
