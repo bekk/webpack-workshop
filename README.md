@@ -638,10 +638,10 @@ Kodesplitting vil si å dele opp koden i flere bundles. Dette vil da gi deg muli
 
 ### Flere entry points
 Man lager en annen start html og legger denne inn som et entry point i webpack.config.js:
-```
+```js
 entry: {
   index: './path/to/my/entry/file.js',
-  annen: './path/to/another/entry/file.js',
+  annen: './path/to/another/entry/file.js'
 },
 ```
 Kodesplitting ved et nytt entry point er den enkleste måten å dele opp koden, men i gjengjeld mister man fleksibilitet og man har ingen mulighet til å splitte dynamisk. Det vil også bli duplisert kode dersom de forskjellige modulene er avhengig av de samme pakkene. 
@@ -695,7 +695,7 @@ module.exports = {
 };
 ```
 I utils.js filen vi har i prosjektet vårt har vi statisk importert `lodash`, dette skal vi nå endre til en dynamisk hentet avhengigheten. 
-```
+```js
 export function getTimeOfDay() {
   return import("lodash").then(({default: _}) => { 
     const hours = new Date().getHours();
@@ -714,7 +714,7 @@ export function getTimeOfDay() {
 ```
 OBS: Dette returnerer et promise som man må resolve når man henter komponenten. 
 
-```
+```js
 getTimeOfDay().then(component => {
    // gjør noe med component
 })
@@ -745,7 +745,7 @@ export function getTimeOfDay() {
 ```
 
 main.js
-````js
+````typescript jsx
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import tekst from './other/tekstfil.txt'
