@@ -139,7 +139,7 @@ Etter det, gjør slik at dev-serveren bruker development, mens bundlen vi bygger
 <details>
   <summary>🚨Løsningsforslag</summary>
 
-webpack.config.js
+webpack.config.js:
 ```js
 module.exports = {
     entry: './src/main.js',
@@ -156,8 +156,8 @@ module.exports = {
 ```
 Kjør npm run build og så se på f.eks størrelsen på filen for hver "mode" dere bygger og åpne opp filen for å se hvordan innholdet i bundelen ser ut for hver mode.
 
-Package.json
 ```js
+package.json
 "scripts": {
     "build": "webpack --mode=production --config webpack.config.js",
     "dev": "webpack-dev-server --mode=development --config webpack.config.js",
@@ -169,8 +169,8 @@ Package.json
 ## Loaders
 Webpack forstår i utgangspunktet kun javascript, men ved hjelp av loaders kan vi få webpack til å prosessere forskjellige typer filer. Disse blir da konvertert til moduler som legges til i webpack sitt dependency tre.
 Loaders består av to hoveddeler som definerer hvordan de fungerer:
-`Test` propertien brukes til å definere hvilke filer som skal identifiseres og transformeres.
-`Use` propertien definerer hvillken loader som skal gjøre selve transformeringen. Et grunnleggende eksempel på dette er:
+`test`-feltet brukes til å definere hvilke filer som skal identifiseres og transformeres.
+`use`-feltet definerer hvillken loader som skal gjøre selve transformeringen. Et grunnleggende eksempel på dette er:
 ```
 module.exports = {
   output: {
@@ -185,38 +185,35 @@ module.exports = {
   }
 };
 ```
-Her setter man en `rules` property som tar en liste med objekter hvor hvert objektet skal ha de obligatoriske feltene `Test` og `Use`.
+Her setter man et `rules`-felt som tar en liste med objekter hvor hvert objektet skal ha de obligatoriske feltene `test` og `use`.
 Hver gang webpack kommer over en path som viser seg å være en '.txt' så skal man sende denne gjennom 'raw-loader' slik at den kan transformeres før den legges til bundelen. I de neste seksjonene skal vi sette opp litt forskjellige loaders som er veldig vanlige å bruke.
 
 #### 🏆Oppgave
-Raw loaderen tar tekstfiler og importerer innholdet rett inn i en string. Last raw loaderen ned ved å kjøre: `npm install raw-loader --save` og bruk den til å importere en tekstfila fom ligger i mappen _other_ som en streng i javascripten deres.
+Raw loaderen tar tekstfiler og importerer innholdet rett inn i en string. Last raw loaderen ned ved å kjøre: `npm install raw-loader -S` og bruk den til å importere `tektsfil.txt` som ligger i mappen _other_ som en streng i javascripten deres.
 
 <details>
   <summary>🚨Løsningsforslag</summary>
-	
 webpack.config.js:
  ```js
 const path = require('path');
 
 module.exports = {
-  entry: './src/main.js',
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'main.bundle.js'
-  },
-  devServer: {
-    publicPath: '/dist/',
-    contentBase: './src'
-  },
-  module: {
-    rules: [ { 
-          test: /\.txt$/,
-          use: 'raw-loader'
-       }
-    ]
-  }
+    entry: './src/main.js',
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'main.bundle.js'
+    },
+    devServer: {
+        publicPath: '/dist/',
+        contentBase: './src'
+    },
+    module: {
+        rules: [{
+            test: /\.txt$/,
+            use: 'raw-loader'
+        }]
+    }
 };
-    
 ```
 main.js:
 ```js
@@ -237,22 +234,20 @@ En ting vi kan bruke loaders til er å bygge CSS filer inn i bundlen vår. For �
 `npm install css-loader -D`. Denne konfigurerer vi på samme måte som 'raw-loader' ved å definere en regel under module.rules:
 ```
   module: {
-    rules: [ { 
-          test: /\.css$/,
-          use: 'css-loader'
-       }
-    ]
+    rules: [{
+        test: /\.css$/,
+        use: 'css-loader'
+    }]
   }
 ```
 css-loader vil kun legge CSS'en vår inn i en string, så vi trenger også `style-loader` som tar stringen vår med css, og putter det i en _style-tag_ som plasseres i `<head>`.
 Installer style-loader ved `npm install style-loader -D`. Siden den skal brukes for samme filer som css-loader, kan vi putte begge loaderne i et array:
 ```
   module: {
-    rules: [ { 
-          test: /\.css$/,
-          use: ['style-loader', 'css-loader']
-       }
-    ]
+    rules: [{ 
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+    }]
   }
 ```
 
@@ -262,34 +257,35 @@ Ved å inspisere siden i consolet, ser vi at css'en også ligger i `<head>`.
 
 <details>
   <summary>🚨Løsningsforslag</summary>
-	
+
 webpack.config.js:
  ```js
+ 
 const path = require('path');
 
 module.exports = {
-  entry: './src/main.js',
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'main.bundle.js'
-  },
-  devServer: {
-    publicPath: '/dist/',
-    contentBase: './src'
-  },
-  module: {
-    rules: [ { 
-          test: /\.txt$/,
-          use: 'raw-loader'
-       },
-       { 
-          test: /\.css$/,
-	  use: ['style-loader', 'css-loader']
-       },
-    ]
-  }
+    entry: './src/main.js',
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'main.bundle.js'
+    },
+    devServer: {
+        publicPath: '/dist/',
+        contentBase: './src'
+    },
+    module: {
+        rules: [
+            {
+                test: /\.txt$/,
+                use: 'raw-loader'
+            },
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader']
+            }
+        ]
+    }
 };
-    
 ```
 main.js:
 ```js
@@ -300,22 +296,21 @@ import './other/style.css'
 
 ### Bilder
 
-Bilder er ofte en del av en web-applikasjon. Får å hente inn bilder trenger vi file loader som lastes ned ved hjelp av: `npm install file-loader -D`. I CSS avsnittet over viste vi at dersom vi skulle bruke forskjellige loadere på de samme filene kunne vi legge det til i arrayet vi gir til `use`. File loader derimot bruker samme loader på fler fil-typer. Vi må derfor endre `test`-propertien til å teste på flere typer fil-endelser som vist under.
+Bilder er ofte en del av web-applikasjoner og nettsider. For å hente inn bilder trenger vi en file-loader som kan installeres ved å kjøre `npm install file-loader -D`. I CSS avsnittet over viste vi at dersom vi skulle bruke forskjellige loadere på de samme filene kunne vi legge det til i arrayet vi gir til `use`. File loader derimot bruker samme loader på fler fil-typer. Vi må derfor endre `test`-propertien til å teste på flere typer fil-endelser som vist under.
 
 ```
 module: {
-    rules: [ { 
+    rules: [{
         test: /\.(png|svg|jpg|gif)$/,
         use: [
           'file-loader',
         ],
-      }
-    ]
+    }]
   }
 ```
 
 #### 🏆Oppgave
-Legg til file-loader i webpack-konfigen, hent bilder clapping.jpg fra mappen _other_ inn i javascripten din. Verifiser at du får vist bildet.
+Legg til file-loader i webpack-konfigen, hent bildet `clapping.jpg` fra mappen _other_ inn i javascripten din. Verifiser at du får vist bildet.
 
 <details>
   <summary>🚨Løsningsforslag</summary>
@@ -325,32 +320,34 @@ webpack.config.js:
 const path = require('path');
 
 module.exports = {
-  entry: './src/main.js',
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'main.bundle.js'
-  },
-  devServer: {
-    publicPath: '/dist/',
-    contentBase: './src'
-  },
-  module: {
-    rules: [ { 
-          test: /\.txt$/,
-          use: 'raw-loader'
-       },
-       { 
-          test: /\.css$/,
-	  use: ['style-loader', 'css-loader']
-       },
-       {
-          test: /\.(png|svg|jpg|gif)$/,
-	  use: ['file-loader'],
-       },
-    ]
-  }
+    entry: './src/main.js',
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'main.bundle.js'
+    },
+    devServer: {
+        publicPath: '/dist/',
+        contentBase: './src'
+    },
+    module: {
+        rules: [
+            {
+                test: /\.txt$/,
+                use: 'raw-loader'
+            },
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader']
+            },
+            {
+                test: /\.(png|svg|jpg|gif)$/,
+                use: [
+                    'file-loader',
+                ],
+            }
+        ]
+    }
 };
-    
 ```
 main.js:
 ```js
