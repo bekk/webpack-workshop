@@ -87,7 +87,7 @@ module.exports = {
 Installer webpack-dev-server: `npm install webpack-dev-server -D`. For at det skal være lettere å starte serveren kan det nok en gang være lurt å opprette et script i package.json, f.eks `"dev": "webpack-dev-server --config webpack.config.js"`. Hvis vi kjører dette scriptet ved å kalle `npm run dev`, og går til `http://localhost:8080` i nettleseren, vil vi se en oversikt over mappestrukturen til prosjektet vårt.
 Dette skyldes at dev-serveren trenger litt hjelp til å finne ut av hvor den skal laste bundelen vår fra og hvor den statiske html-filen vår skal serves fra.
 
-Vi konfigurer dev-serveren i webpack.config.js-fila. `publicPath` definerer hvor bundelen ligger og `contentBase` definerer hvor vi skal hente statisk content fra.
+Vi konfigurer dev-serveren i webpack.config.js-fila. `publicPath` definerer hvor vi kan nå statisk-content fra og `contentBase` forteller webpack hvor kildekoden vår ligger.
 Eksempel på dev-server oppsett:
 ```
     devServer: {
