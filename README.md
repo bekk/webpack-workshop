@@ -112,7 +112,7 @@ module.exports = {
     filename: 'main.bundle.js'
   },
   devServer: {
-    publicPath: '/',
+    publicPath: '/', // '/' er default-verdi, så denne kan vi egentlig fjerne
     contentBase: './src'
   },
 };
