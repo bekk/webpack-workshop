@@ -723,7 +723,7 @@ getTimeOfDay().then(component => {
 Hent lodash dynamisk inn i getTimeOfDay komponenten og deretter bygg prosjektet med webpack for å se at `lodash` nå har blitt splittet ut i en egen bundle. 
 
 <details>
-<summary>Løsningsforslag</summary>
+<summary>🚨Løsningsforslag</summary>
 
 utils.js:
 ```js
