@@ -271,6 +271,7 @@ module.exports = {
         filename: 'main.bundle.js'
     },
     devServer: {
+	publicPath: '/',
         contentBase: './src'
     },
     module: {
@@ -324,6 +325,7 @@ module.exports = {
         filename: 'main.bundle.js'
     },
     devServer: {
+	publicPath: '/',
         contentBase: './src'
     },
     module: {
@@ -391,6 +393,7 @@ module.exports = {
         filename: 'main.bundle.js'
     },
     devServer: {
+	publicPath: '/',
         contentBase: './src'
     },
     module: {
