@@ -76,7 +76,6 @@ module.exports = {
 	filename: 'main.bundle.js'
     },
 };
-    
 ```
 
 </details>
@@ -143,8 +142,8 @@ Etter det, gjør slik at dev-serveren bruker development, mens bundlen vi bygger
 webpack.config.js
 ```js
 module.exports = {
-	entry: './src/main.js',
-  	output: {
+    entry: './src/main.js',
+    output: {
         path: path.resolve(__dirname, 'dist'),
         filename: 'main.bundle.js'
     },
