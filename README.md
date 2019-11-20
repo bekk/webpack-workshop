@@ -475,13 +475,14 @@ HtmlWebpackPlugin kan gjøre veldig mye mer enn vist her, sjekk ut https://githu
 
 ### Bundle Analyzer
 En annen nyttig plugin er [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer). Vi har sett hvordan webpack kan minimize bundlen vår slik at den egner seg bedre for produksjon. Likevel kan det hende at vi fortsatt sitter igjen med en stor bundle. Webpack-bundle-analyzer er et verktøy som lar oss se hvilke pakker bundlen vår inneholder, og hvor stor plass de faktisk tar.
-Pluginen starter automatisk i en egen fane ved `npm start` etter at du har installert og konfigurert den.
+Pluginen starter automatisk i en egen fane når vi kjører dev-serveren etter at vi har installert og konfigurert den.
 
 #### 🏆Oppgave
 Legg til `webpack-bundle-analyzer` i prosjektet og konfigurer den i webpack-konfigen.
 
 <details>
     <summary>🚨Løsningsforslag</summary>
+    
 Etter å ha installert pluginen med `npm i webpack-bundle-analyzer -D` oppdaterer du `webpack.config.js` med følgende verdier:
 
 ```js
@@ -495,17 +496,68 @@ module.exports = {
   ]
 }
 ```
-Vi kan se at biblioteket lodash tar veldig mye av den totale bundle størrelsen. Om vi går inn i `src/utils.js` og endrer importen av lodash til å kunne ta inn string delen av biblioteket(`import _ from 'lodash/string';`), kan vi se med webpack-bundle-analyzer at lodash nå tar opp langt mindre plass.
+Om vi kjører pluginen ved å starte dev-serveren kan vi se at biblioteket lodash tar veldig mye av den totale bundle størrelsen. Om vi går inn i `src/utils.js` og endrer importen av lodash til å kunne ta inn string delen av biblioteket(`import _ from 'lodash/string';`), kan vi se med webpack-bundle-analyzer at lodash nå tar opp langt mindre plass.
 
 </details>
 <br/>
 
 
 ## React
-Ettersom react faggruppen er her må vi selvsagt leke litt med React. Ettersom vi allerede har et babel oppsett gående er det litt mindre som trengs å gjøre enn vanlig. Vi trenger selvsagt React: `npm install --save react react-dom`. Og vi må ha litt mer hjelp til Babel: `npm install @babel/preset-react -D`. Denne pakken lar oss blant annet transformere jsx. 
+En workshop i react-gruppa er ikke komplett uten at vi får lekt litt med React. Ettersom vi allerede har et babel oppsett gående er det litt mindre som trengs å gjøre enn vanlig. Vi trenger selvsagt React: `npm install --save react react-dom`. Og vi må ha litt mer hjelp til Babel: `npm install @babel/preset-react -D`. Denne pakken lar oss blant annet transformere jsx. 
 
 #### 🏆Oppgave
 Lag en React component og rendrer denne i nettsiden din. Husk å koble React på et element i DOMen din.
+
+<details>
+<summary>🚨Løsningsforslag</summary>
+
+webpack.config.js:
+```js
+// Oppdatér module.rules-listen slik at babel-loader også tar .jsx-filer:
+{
+    test: /\.(js|jsx)$/,
+    exclude: /(node_modules)/,
+    use: 'babel-loader'
+}
+```
+
+.babelrc:
+```js
+{
+  "presets": [
+    "@babel/preset-env",
+    "@babel/preset-react"
+  ]
+}
+```
+
+main.js:
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+import tekst from './other/tekstfil.txt'
+import { getTimeOfDay } from './utils';
+import './other/style.css'
+
+const App = () => {
+    return (
+        <>
+            <h1>Heisann!</h1>
+            <p>Håper du har en fin {getTimeOfDay().toLowerCase()}</p>
+            <p>{tekst}</p>
+            <img src="./other/clapping.jpg" alt="Klappende smilefjes" />
+        </>
+    );
+};
+
+ReactDOM.render(
+    <App />,
+    document.getElementById('app')
+);
+
+```
+
+</details>
 
 ### Typescript
 I dag er det stadig mer populært å få typer inn i javascript verden. Den mest direkte måten å gjøre dette på er å introdusere Typescript eller Flow. Dette er ukomplisert nå som webpack-konfigen vår begynner å ta form. Man må selvfølgelig installere typescript med `npm install typescript` og deretter trenger vi en ts loader: `npm install ts-loader -D`. Det vil også kreves en tsconfig.json som for øyeblikket kan være helt tom.
