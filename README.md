@@ -148,7 +148,7 @@ module.exports = {
         filename: 'main.bundle.js'
     },
     devServer: {
-	publicPath: './dist/',
+	publicPath: '/',
 	contentBase: './src'
     },
     mode: 'development',  //eller mode: 'production'
@@ -156,12 +156,12 @@ module.exports = {
 ```
 Kjør npm run build og så se på f.eks størrelsen på filen for hver "mode" dere bygger og åpne opp filen for å se hvordan innholdet i bundelen ser ut for hver mode.
 
+package.json:
 ```js
-package.json
 "scripts": {
     "build": "webpack --mode=production --config webpack.config.js",
-    "dev": "webpack-dev-server --mode=development --config webpack.config.js",
-  },
+    "dev": "webpack-dev-server --mode=development --config webpack.config.js"
+},
 ```
 </details>
 <br/>
@@ -171,20 +171,21 @@ Webpack forstår i utgangspunktet kun javascript, men ved hjelp av loaders kan v
 Loaders består av to hoveddeler som definerer hvordan de fungerer:
 `test`-feltet brukes til å definere hvilke filer som skal identifiseres og transformeres.
 `use`-feltet definerer hvillken loader som skal gjøre selve transformeringen. Et grunnleggende eksempel på dette er:
-```
+
+```js
 module.exports = {
-  output: {
-    filename: 'my-first-webpack.bundle.js'
-  },
-  module: {
-    rules: [ { 
-          test: /\.txt$/,
-          use: 'raw-loader'
-       }
-    ]
-  }
+    output: {
+        filename: 'my-first-webpack.bundle.js'
+    },
+    module: {
+        rules: [{ 
+            test: /\.txt$/,
+            use: 'raw-loader'
+        }]
+    }
 };
 ```
+
 Her setter man et `rules`-felt som tar en liste med objekter hvor hvert objektet skal ha de obligatoriske feltene `test` og `use`.
 Hver gang webpack kommer over en path som viser seg å være en '.txt' så skal man sende denne gjennom 'raw-loader' slik at den kan transformeres før den legges til bundelen. I de neste seksjonene skal vi sette opp litt forskjellige loaders som er veldig vanlige å bruke.
 
@@ -193,6 +194,7 @@ Raw loaderen tar tekstfiler og importerer innholdet rett inn i en string. Last r
 
 <details>
   <summary>🚨Løsningsforslag</summary>
+
 webpack.config.js:
  ```js
 const path = require('path');
@@ -232,23 +234,23 @@ app.appendChild(tekstfil);
 ### CSS
 En ting vi kan bruke loaders til er å bygge CSS filer inn i bundlen vår. For å få til dette må vi installere loaderen vi ønsker å bruke:
 `npm install css-loader -D`. Denne konfigurerer vi på samme måte som 'raw-loader' ved å definere en regel under module.rules:
-```
-  module: {
+```js
+module: {
     rules: [{
         test: /\.css$/,
         use: 'css-loader'
     }]
-  }
+}
 ```
 css-loader vil kun legge CSS'en vår inn i en string, så vi trenger også `style-loader` som tar stringen vår med css, og putter det i en _style-tag_ som plasseres i `<head>`.
 Installer style-loader ved `npm install style-loader -D`. Siden den skal brukes for samme filer som css-loader, kan vi putte begge loaderne i et array:
-```
-  module: {
-    rules: [{ 
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader']
-    }]
-  }
+```js
+    module: {
+        rules: [{ 
+            test: /\.css$/,
+            use: ['style-loader', 'css-loader']
+        }]
+    }
 ```
 
 #### 🏆Oppgave
@@ -260,7 +262,6 @@ Ved å inspisere siden i consolet, ser vi at css'en også ligger i `<head>`.
 
 webpack.config.js:
  ```js
- 
 const path = require('path');
 
 module.exports = {
@@ -297,15 +298,13 @@ import './other/style.css'
 
 Bilder er ofte en del av web-applikasjoner og nettsider. For å hente inn bilder trenger vi en file-loader som kan installeres ved å kjøre `npm install file-loader -D`. I CSS avsnittet over viste vi at dersom vi skulle bruke forskjellige loadere på de samme filene kunne vi legge det til i arrayet vi gir til `use`. File loader derimot bruker samme loader på fler fil-typer. Vi må derfor endre `test`-propertien til å teste på flere typer fil-endelser som vist under.
 
-```
+```js
 module: {
     rules: [{
         test: /\.(png|svg|jpg|gif)$/,
-        use: [
-          'file-loader',
-        ],
+        use: 'file-loader'
     }]
-  }
+}
 ```
 
 #### 🏆Oppgave
@@ -325,7 +324,6 @@ module.exports = {
         filename: 'main.bundle.js'
     },
     devServer: {
-        publicPath: '/',
         contentBase: './src'
     },
     module: {
@@ -340,9 +338,7 @@ module.exports = {
             },
             {
                 test: /\.(png|svg|jpg|gif)$/,
-                use: [
-                    'file-loader',
-                ],
+                use: 'file-loader'
             }
         ]
     }
@@ -360,19 +356,19 @@ app.appendChild(img);
 ### Babel
 En av de viktigste transformeringene for oss utviklere er at man kan skrive ny javascript kode som faktisk kjører på "alle" nettlesere. In comes Babel. Babel lar oss skrive ES6 og definere polyfills (kode som skal byttes ut med spesifikk annen kode) som blir transpilert til annen versjon av javascript som kan kjøre i et bredere spekter av nettlesere. Kjør følgende kommando for å installere de nødvendige pakkene:
 `npm install @babel/core @babel/preset-env babel-loader -D`. Babel core er hovedbiblioteket til babel, preset-env skal vi bruke til å konfigurere opp hva vi vil at babel skal gjøre og loaderen trenger vi for å integrere med webpack. Når disse pakkene er installert kan vi oppdatere webpack-konfigen vår til å inkludere vår nye loader slik:
-```
+```js
 module: {
-  rules: [
-    {
-      test: /\.js$/,
-      exclude: /(node_modules)/,
-      use: 'babel-loader'
-    }
-  ]
+    rules: [
+        {
+            test: /\.js$/,
+            exclude: /(node_modules)/,
+            use: 'babel-loader'
+        }
+    ]
 }
 ```
 Som vanlig definerer vi `test` og `use`. Test er satt til alle javascript filer, use er fortsatt loaderen vår og `exclude` lar oss spesifisere mapper vi ønsker at denne regelen ikke skal gjelde for. Det er både unødvendig og ineffektivt å transpilere filene i node_modules. Babel konfigureres vanligvis via en .babelrc fil og en av pakkene ovenfor (preset env) skal brukes i konfigen her. Preset env kompilerer koden vår som er ES2015+ kompatibel ned til ES5 kompatibel kode ved å bruke babel plugins og polyfills som kan variere avhengig av browser eller miljø. Den enkleste måte å bruke preset env på er å ha det følgende i .babelrc-filen vår:
-```
+```js
 {
   "presets": ["@babel/preset-env"]
 }
@@ -409,9 +405,7 @@ module.exports = {
             },
             {
                 test: /\.(png|svg|jpg|gif)$/,
-                use: [
-                    'file-loader',
-                ],
+                use: 'file-loader'
             },
             {
                 test: /\.js$/,
@@ -453,22 +447,20 @@ Der loaders brukes til å gjennomføre en spesifikk transformasjon på visse mod
 ### Html Webpack Plugin
 Selv om html-filen som vi har laget selv fungerer bra, er det enklere om webpack genererer en for oss. HtmlWebpackPlugin genererer rett og slett en standard html-fil med en script tag som linker til bundlen vår, og putter den i output mappen.
 Installer HtmlWebpackPlugin(`npm i html-webpack-plugin -D`) og legg til dette i webpack-konfigen:
-```
+```js
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  plugins: [
-    new HtmlWebpackPlugin()
-  ]
+    plugins: [
+        new HtmlWebpackPlugin()
+    ]
 }
 ```
 Dersom vi nå bygger prosjektet vårt med `npm run build`, ser vi at en html-fil også har dukket opp i mappen `/dist`.
 
 Dersom dev-serveren nå benytter den genererte filen, vil vi oppleve at javascript feiler, ettersom den ser etter et element i DOM'en som ikke finnes. Vi løser dette ved å sette html-filen vår som en template. Da vil webpack ta utgangspunkt i denne, og legge til en referanse i javascript-bundlen.
-```
-new HtmlWebpackPlugin({
-    template: './src/index.html'
-})
+```js
+new HtmlWebpackPlugin({ template: './src/index.html' })
 ```
 Husk å fjerne script-taggen fra `src/index.html` slik at vi ikke laster inn vår javascript to ganger.  
 HtmlWebpackPlugin kan gjøre veldig mye mer enn vist her, sjekk ut https://github.com/jantimon/html-webpack-plugin for et innblikk i det den kan gjøre.
@@ -491,9 +483,9 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 
 // Legg til pluginen i plugin-lista
 module.exports = {
-  plugins: [
-    new BundleAnalyzerPlugin()
-  ]
+    plugins: [
+        new BundleAnalyzerPlugin()
+    ]
 }
 ```
 Om vi kjører pluginen ved å starte dev-serveren kan vi se at biblioteket lodash tar veldig mye av den totale bundle størrelsen. Om vi går inn i `src/utils.js` og endrer importen av lodash til å kunne ta inn string delen av biblioteket(`import _ from 'lodash/string';`), kan vi se med webpack-bundle-analyzer at lodash nå tar opp langt mindre plass.
@@ -503,7 +495,7 @@ Om vi kjører pluginen ved å starte dev-serveren kan vi se at biblioteket lodas
 
 
 ## React
-En workshop i react-gruppa er ikke komplett uten at vi får lekt litt med React. Ettersom vi allerede har et babel oppsett gående er det litt mindre som trengs å gjøre enn vanlig. Vi trenger selvsagt React: `npm install --save react react-dom`. Og vi må ha litt mer hjelp til Babel: `npm install @babel/preset-react -D`. Denne pakken lar oss blant annet transformere jsx. 
+En workshop i react-gruppa er ikke komplett uten at vi får lekt litt med React. Ettersom vi allerede har et babel oppsett gående er det litt mindre som trengs å gjøres enn vanlig. Vi trenger selvsagt React: `npm install --save react react-dom`. Og vi må ha litt mer hjelp til Babel: `npm install @babel/preset-react -D`. Denne pakken lar oss blant annet transformere jsx. 
 
 #### 🏆Oppgave
 Lag en React component og rendrer denne i nettsiden din. Husk å koble React på et element i DOMen din.
@@ -524,15 +516,15 @@ webpack.config.js:
 .babelrc:
 ```js
 {
-  "presets": [
-    "@babel/preset-env",
-    "@babel/preset-react"
-  ]
+    "presets": [
+        "@babel/preset-env",
+        "@babel/preset-react"
+    ]
 }
 ```
 
 main.js:
-```jsx
+```typescript jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
 import tekst from './other/tekstfil.txt'
@@ -611,7 +603,7 @@ export default TypescriptComponent;
 ```
 
 main.js:
-````jsx
+````typescript jsx
 import React from 'react';
 import ReactDOM from 'react-dom';
 import tekst from './other/tekstfil.txt'
@@ -644,28 +636,49 @@ Husk å installere typedefinisjonene til React: `npm i @types/react -D`.
 ## Code splitting
 Kodesplitting vil si å dele opp koden i flere bundles. Dette vil da gi deg mulighet til å laste bundler etter behov eller i parallell. Ved å gjøre dette kan man optimalisere lastetiden til applikasjonen ved å prioritere hvilken bundle/kode som skal lastes når og at man henter mindre bundler. Kodesplitting kan gjøres på forskjellige måter i webpack: 
 
-### Fler entry points
+### Flere entry points
 Man lager en annen start html og legger denne inn som et entry point i webpack.config.js:
 ```
 entry: {
-  entry: './path/to/my/entry/file.js',
-  annet: './path/to/another/entry/file.js',
+  index: './path/to/my/entry/file.js',
+  annen: './path/to/another/entry/file.js',
 },
 ```
 Kodesplitting ved et nytt entry point er den enkleste måten å dele opp koden, men i gjengjeld mister man fleksibilitet og man har ingen mulighet til å splitte dynamisk. Det vil også bli duplisert kode dersom de forskjellige modulene er avhengig av de samme pakkene. 
 
 #### Forhindre duplisering av kode:
-Dersom man har fler entry point som beskrevet over er det fler muligheter for å forhindre duplisert kode:
+Dersom man har flere entry point som beskrevet over er det flere muligheter for å forhindre duplisert kode:
 * `SplitChunksPlugin`: Legge felles avhengigheter i en egen chunk. Les mer: https://webpack.js.org/plugins/split-chunks-plugin/
-* `Mini-css-extract-plugin`: Splitte ut css fra applikasjonen. Les mer: https://webpack.js.org/plugins/mini-css-extract-plugin/
-* `Bundle-loader`: Splitte kode og lazy laste budlene som kommer fra kodesplittingen. Les mer: https://webpack.js.org/loaders/bundle-loader/
-* `Promise-loader`: Lignende Bundle-loader men bruker promises. Les mer: https://github.com/gaearon/promise-loader
+* `mini-css-extract-plugin`: Splitte ut css fra applikasjonen. Les mer: https://webpack.js.org/plugins/mini-css-extract-plugin/
+* `bundle-loader`: Splitte kode og lazy laste budlene som kommer fra kodesplittingen. Les mer: https://webpack.js.org/loaders/bundle-loader/
+* `promise-loader`: Lignende `bundle-loader` men bruker promises. Les mer: https://github.com/gaearon/promise-loader
 
 
 #### 🏆Oppgave:
-Opprett en html-fil som importerer en tilhørende js fil. Legg html filen ved siden av den eksisterende index.html og js filen under src-mappen.
-
 Prøv en enkel kodesplitting og sjekk at du får to bundles. 
+
+Opprett en ny js-fil i src-mappa som skriver en hyggelig melding til konsollen, f.eks. `console.log('Selbekk er en helt rå faggruppeleder ❤️')`. Legg denne til i entry-objektet i `module.exports` i webpack-konfigen. Sjekk at du får to bundles i outputen når du bygger prosjektet, i utviklerfanen i nettleseren din eller i BundleAnalyzer-pluginen.
+
+<details>
+<summary>🚨Løsningsforslag</summary>
+
+Opprett fila `src/secondary.js` og legg til følgende:
+````js
+console.log('Selbekk er en helt rå faggruppeleder ❤️')
+````
+
+Endre følgende i webpack.config.js:
+```js
+entry: {
+    index: './src/main.js',
+    secondary: './src/secondary.js'
+},
+output: {
+    path: path.resolve(__dirname, 'dist'),
+    filename: '[name].bundle.js'
+},
+```
+</details>
 
 ### Dynamiske importer
 I denne workshopen skal vi bruke import() for dynamiske importer. (Det finnes en alternativ måte for dynamisk import, om du er interessert kan du lese mer om den her https://webpack.js.org/api/module-methods/#require-ensure).
