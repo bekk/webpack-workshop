@@ -607,7 +607,7 @@ main.js:
 import React from 'react';
 import ReactDOM from 'react-dom';
 import tekst from './other/tekstfil.txt'
-import TestComponent from './TestComponent.tsx';
+import TypescriptComponent from './TypescriptComponent.tsx';
 import { getTimeOfDay } from './utils';
 import './other/style.css'
 
@@ -749,7 +749,7 @@ main.js
 import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import tekst from './other/tekstfil.txt'
-import TestComponent from './TestComponent.tsx';
+import TypescriptComponent from './TypescriptComponent.tsx';
 import { getTimeOfDay } from './utils';
 import './other/style.css'
 
@@ -766,7 +766,7 @@ const App = () => {
             <p>Håper du har en fin {timeOfDay.toLowerCase()}</p>
             <p>{tekst}</p>
             <img src="./other/clapping.jpg" alt="Klappende smilefjes" />
-            <TestComponent>Dette er en komponent skrevet i Typescript!</TestComponent>
+            <TypescriptComponent>Dette er en komponent skrevet i Typescript!</TypescriptComponent>
         </>
     );
 };
