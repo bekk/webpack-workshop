@@ -271,7 +271,7 @@ module.exports = {
         filename: 'main.bundle.js'
     },
     devServer: {
-	publicPath: '/',
+        publicPath: '/',
         contentBase: './src'
     },
     module: {
@@ -325,7 +325,7 @@ module.exports = {
         filename: 'main.bundle.js'
     },
     devServer: {
-	publicPath: '/',
+        publicPath: '/',
         contentBase: './src'
     },
     module: {
@@ -393,7 +393,7 @@ module.exports = {
         filename: 'main.bundle.js'
     },
     devServer: {
-	publicPath: '/',
+        publicPath: '/',
         contentBase: './src'
     },
     module: {
@@ -491,11 +491,9 @@ module.exports = {
     ]
 }
 ```
-Om vi kjører pluginen ved å starte dev-serveren kan vi se at biblioteket lodash tar veldig mye av den totale bundle størrelsen. Om vi går inn i `src/utils.js` og endrer importen av lodash til å kunne ta inn string delen av biblioteket(`import _ from 'lodash/string';`), kan vi se med webpack-bundle-analyzer at lodash nå tar opp langt mindre plass.
-
 </details>
 <br/>
-
+Om vi kjører pluginen ved å starte dev-serveren kan vi se at biblioteket lodash tar veldig mye av den totale bundle størrelsen. Om vi går inn i `src/utils.js` og endrer importen av lodash til å kunne ta inn string delen av biblioteket(`import _ from 'lodash/string';`), kan vi se med webpack-bundle-analyzer at lodash nå tar opp langt mindre plass.
 
 ## React
 En workshop i react-gruppa er ikke komplett uten at vi får lekt litt med React. Ettersom vi allerede har et babel oppsett gående er det litt mindre som trengs å gjøres enn vanlig. Vi trenger selvsagt React: `npm install --save react react-dom`. Og vi må ha litt mer hjelp til Babel: `npm install @babel/preset-react -D`. Denne pakken lar oss blant annet transformere jsx. 
