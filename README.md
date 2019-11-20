@@ -681,16 +681,17 @@ output: {
 </details>
 
 ### Dynamiske importer
-I denne workshopen skal vi bruke import() for dynamiske importer. (Det finnes en alternativ måte for dynamisk import, om du er interessert kan du lese mer om den her https://webpack.js.org/api/module-methods/#require-ensure).
 
-I webpack-konfigurasjonen vår må vi sette opp en chunk-fil dette vil si en bundle uten et entry piont:  
-```
+Moduler kan importeres dynamisk ved å bruke `import()`-funksjonen, noe vi skal legge til støtte for i prosjektet vårt nå.
+
+I webpack-konfigurasjonen vår må vi sette opp en chunk-fil, mao. en bundle uten et entry-point:  
+```js
 module.exports = {
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'my-first-webpack.bundle.js',
-    chunkFilename: '[id].bundle.js',  
-  }
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: '[name].bundle.js',
+        chunkFilename: '[id].bundle.js'
+    }
 };
 ```
 I utils.js filen vi har i prosjektet vårt har vi statisk importert `lodash`, dette skal vi nå endre til en dynamisk hentet avhengigheten. 
@@ -721,42 +722,63 @@ getTimeOfDay().then(component => {
 #### 🏆Oppgave 
 Hent lodash dynamisk inn i getTimeOfDay komponenten og deretter bygg prosjektet med webpack for å se at `lodash` nå har blitt splittet ut i en egen bundle. 
 
-Siden import() returnerer et promise kan man også bruke async await for å hente importene ved hjelp av babel og Syntax-dynamic-import pluginen. Last ned pluginen med ´npm install @babel/plugin-syntax-dynamic-import -D` og legg den inn i .babelrc filen din:
+<details>
+<summary>Løsningsforslag</summary>
 
-```
-{
-  "plugins": ["@babel/plugin-syntax-dynamic-import"]
+utils.js:
+```js
+export function getTimeOfDay() {
+    return import('lodash').then(({default: _}) => {
+        const hours = new Date().getHours();
+        let timeOfDay = '';
+        if (hours > 12) {
+            timeOfDay = 'kveld';
+        } else if (hours < 12) {
+            timeOfDay = 'morgen'
+        } else {
+            timeOfDay = 'dag';
+        }
+
+        return _.upperCase(timeOfDay);
+    }).catch(error => 'Kunne ikke hente lodash – dermed ikke komponenten')
 }
 ```
-Med dette kan koden endres slik:
 
+main.js
+````js
+import React, { useEffect, useState } from 'react';
+import ReactDOM from 'react-dom';
+import tekst from './other/tekstfil.txt'
+import TestComponent from './TestComponent.tsx';
+import { getTimeOfDay } from './utils';
+import './other/style.css'
 
-```
-export async function getTimeOfDay() {
-    const { default: _ } = await import("lodash");
-    const hours = new Date().getHours();
-    
-    let timeOfDay = '';
-    if (hours > 12) {
-        timeOfDay = 'kveld';
-    } else if (hours < 12) {
-        timeOfDay = 'morgen'
-    } else {
-        timeOfDay = 'dag';
-    }
-    return _.upperCase(timeOfDay);
- }
-}
-```
-OBS: Dette returnerer et promise som man må resolve når man henter komponenten. 
+const App = () => {
+    const [timeOfDay, setTimeOfDay] = useState('');
 
-```
-getTimeOfDay().then(component => {
-   // gjør noe med component
-})
-```
-For mer informasjon import() finner du dette her: https://webpack.js.org/api/module-methods/#import-
+    useEffect(() => {
+        getTimeOfDay().then(setTimeOfDay);
+    }, []);
 
+    return (
+        <>
+            <h1>Heisann!</h1>
+            <p>Håper du har en fin {timeOfDay.toLowerCase()}</p>
+            <p>{tekst}</p>
+            <img src="./other/clapping.jpg" alt="Klappende smilefjes" />
+            <TestComponent>Dette er en komponent skrevet i Typescript!</TestComponent>
+        </>
+    );
+};
+
+ReactDOM.render(
+    <App />,
+    document.getElementById('app')
+);
+
+````
+
+</details>
 
 ## Er du ferdig?
 * Sett opp hot reloading for react componenten din. Her burde man introdusere en ny komponent med state og se at state forblir inntakt på tvers av reloads. 
