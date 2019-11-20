@@ -559,11 +559,85 @@ ReactDOM.render(
 
 </details>
 
-### Typescript
-I dag er det stadig mer populært å få typer inn i javascript verden. Den mest direkte måten å gjøre dette på er å introdusere Typescript eller Flow. Dette er ukomplisert nå som webpack-konfigen vår begynner å ta form. Man må selvfølgelig installere typescript med `npm install typescript` og deretter trenger vi en ts loader: `npm install ts-loader -D`. Det vil også kreves en tsconfig.json som for øyeblikket kan være helt tom.
+## Typescript
+I dag er det stadig mer populært å få typer inn i javascript-verdenen. Den mest direkte måten å gjøre dette på er å introdusere Typescript eller Flow. Dette er ukomplisert nå som webpack-konfigen vår begynner å ta form. Man må selvfølgelig installere typescript med tilhørende ts-loader med `npm install typescript ts-loader -D`. Det vil også kreves en tsconfig.json som for øyeblikket kan være helt tom.
 
 #### 🏆Oppgave
 Lag en typescript fil som eksporterer en funksjon, importer den i javascript filen du bruker som inngangspunkt og kall funksjonen fra javascript. 
+
+<summary>
+<summary>🚨Løsningsforslag</summary>
+
+Opprett tila `tsconfig.json` og legg til følgende:
+```json
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "noImplicitAny": true,
+    "module": "es6",
+    "target": "es5",
+    "jsx": "react",
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true
+  }
+}
+```
+
+webpack.config.js:
+````js
+// Legg til følgende i module.rules-lista:
+{
+    test: /\.(ts|tsx)$/,
+    exclude: /(node_modules)/,
+    use: 'ts-loader'
+}
+````
+
+Vi har her valgt å lage en React-komponent i Typescript. Opprett fila `src/TypescriptComponent.tsx` og legg til følgende:
+```typescript jsx
+import React from 'react';
+
+interface Props {
+    children: string;
+}
+
+const TypescriptComponent = ({ children }: Props) => {
+    return (
+        <p>{children}</p>
+    );
+};
+
+export default TypescriptComponent;
+```
+
+main.js:
+````jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+import tekst from './other/tekstfil.txt'
+import TestComponent from './TestComponent.tsx';
+import { getTimeOfDay } from './utils';
+import './other/style.css'
+
+const App = () => {
+    return (
+        <>
+            <h1>Heisann!</h1>
+            <p>Håper du har en fin {getTimeOfDay().toLowerCase()}</p>
+            <p>{tekst}</p>
+            <img src="./other/clapping.jpg" alt="Klappende smilefjes" />
+            <TypescriptComponent>Dette er en komponent skrevet i Typescript!</TypescriptComponent>
+        </>
+    );
+};
+
+ReactDOM.render(
+    <App />,
+    document.getElementById('app')
+);
+````
+
+</summary>
 
 ## Code splitting
 Kodesplitting vil si å dele opp koden i flere bundles. Dette vil da gi deg mulighet til å laste bundler etter behov eller i parallell. Ved å gjøre dette kan man optimalisere lastetiden til applikasjonen ved å prioritere hvilken bundle/kode som skal lastes når og at man henter mindre bundler. Kodesplitting kan gjøres på forskjellige måter i webpack: 
