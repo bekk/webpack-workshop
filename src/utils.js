@@ -1,4 +1,4 @@
-import _ from 'lodash/string';
+import _ from 'lodash';
 export function getTimeOfDay() {
     const hours = new Date().getHours();
     let timeOfDay = '';
