@@ -565,7 +565,7 @@ I dag er det stadig mer populært å få typer inn i javascript-verdenen. Den me
 #### 🏆Oppgave
 Lag en typescript fil som eksporterer en funksjon, importer den i javascript filen du bruker som inngangspunkt og kall funksjonen fra javascript. 
 
-<summary>
+<details>
 <summary>🚨Løsningsforslag</summary>
 
 Opprett tila `tsconfig.json` og legg til følgende:
@@ -637,7 +637,9 @@ ReactDOM.render(
 );
 ````
 
-</summary>
+Husk å installere typedefinisjonene til React: `npm i @types/react -D`. 
+
+</details>
 
 ## Code splitting
 Kodesplitting vil si å dele opp koden i flere bundles. Dette vil da gi deg mulighet til å laste bundler etter behov eller i parallell. Ved å gjøre dette kan man optimalisere lastetiden til applikasjonen ved å prioritere hvilken bundle/kode som skal lastes når og at man henter mindre bundler. Kodesplitting kan gjøres på forskjellige måter i webpack: 
