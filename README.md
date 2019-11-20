@@ -112,7 +112,7 @@ module.exports = {
     filename: 'main.bundle.js'
   },
   devServer: {
-    publicPath: '/dist/',
+    publicPath: '/',
     contentBase: './src'
   },
 };
@@ -204,7 +204,7 @@ module.exports = {
         filename: 'main.bundle.js'
     },
     devServer: {
-        publicPath: '/dist/',
+        publicPath: '/',
         contentBase: './src'
     },
     module: {
@@ -270,7 +270,6 @@ module.exports = {
         filename: 'main.bundle.js'
     },
     devServer: {
-        publicPath: '/dist/',
         contentBase: './src'
     },
     module: {
@@ -326,7 +325,7 @@ module.exports = {
         filename: 'main.bundle.js'
     },
     devServer: {
-        publicPath: '/dist/',
+        publicPath: '/',
         contentBase: './src'
     },
     module: {
@@ -359,7 +358,7 @@ app.appendChild(img);
 <br/>
 
 ### Babel
-En av de viktigste transformeringene for oss utviklere er at man kan skrive ny javascript kode som faktisk kjører på "alle" nettlesere. In comes Babel. Babel lar oss skrive ES6 og definere polyfills (kode som skal byttes ut med spesifikk annen kode) som blir transpilert til annen versjon av javascript som kan kjøre i et bredere spekter av nettlesere. Installer de følgende babel-pakkene før du fortsetter:
+En av de viktigste transformeringene for oss utviklere er at man kan skrive ny javascript kode som faktisk kjører på "alle" nettlesere. In comes Babel. Babel lar oss skrive ES6 og definere polyfills (kode som skal byttes ut med spesifikk annen kode) som blir transpilert til annen versjon av javascript som kan kjøre i et bredere spekter av nettlesere. Kjør følgende kommando for å installere de nødvendige pakkene:
 `npm install @babel/core @babel/preset-env babel-loader -D`. Babel core er hovedbiblioteket til babel, preset-env skal vi bruke til å konfigurere opp hva vi vil at babel skal gjøre og loaderen trenger vi for å integrere med webpack. Når disse pakkene er installert kan vi oppdatere webpack-konfigen vår til å inkludere vår nye loader slik:
 ```
 module: {
@@ -372,7 +371,7 @@ module: {
   ]
 }
 ```
-Som vanlig definerer vi `test` og `use`. Test er satt til alle javascript filer, use er fortsatt loaderen vår og `exclude` lar oss spesifisere mapper vi ønsker at denne regelen ikke skal gjelde for. Det er både unødvendig og ineffektivt å kjøre babel transpilering på filene i node_modules. Babel konfigureres vanligvis via en .babelrc fil og en av pakkene ovenfor (preset env) skal brukes i konfigen her. Preset env kompilerer koden vår som er ES2015+ kompatibel ned til ES5 kompatibel kode ved å bruke babel plugins og polyfills som kan variere avhengig av browser eller miljø. Den enkleste måte å bruke preset env på er å ha det følgende i .babelrc-filen vår:
+Som vanlig definerer vi `test` og `use`. Test er satt til alle javascript filer, use er fortsatt loaderen vår og `exclude` lar oss spesifisere mapper vi ønsker at denne regelen ikke skal gjelde for. Det er både unødvendig og ineffektivt å transpilere filene i node_modules. Babel konfigureres vanligvis via en .babelrc fil og en av pakkene ovenfor (preset env) skal brukes i konfigen her. Preset env kompilerer koden vår som er ES2015+ kompatibel ned til ES5 kompatibel kode ved å bruke babel plugins og polyfills som kan variere avhengig av browser eller miljø. Den enkleste måte å bruke preset env på er å ha det følgende i .babelrc-filen vår:
 ```
 {
   "presets": ["@babel/preset-env"]
@@ -390,36 +389,39 @@ webpack.config.js:
 const path = require('path');
 
 module.exports = {
-  entry: './src/main.js',
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'main.bundle.js'
-  },
-  devServer: {
-    publicPath: '/dist/',
-    contentBase: './src'
-  },
-  module: {
-    rules: [ { 
-          test: /\.txt$/,
-          use: 'raw-loader'
-       },
-       { 
-          test: /\.css$/,
-	  use: ['style-loader', 'css-loader']
-       },
-       {
-          test: /\.(png|svg|jpg|gif)$/,
-	  use: ['file-loader'],
-       },
-       {
-          test: /\.js$/,
-	  exclude: /(node_modules)/,
-	  use: 'babel-loader'
-       }
-    ]
-  }
+    entry: './src/main.js',
+    output: {
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'main.bundle.js'
+    },
+    devServer: {
+        contentBase: './src'
+    },
+    module: {
+        rules: [
+            {
+                test: /\.txt$/,
+                use: 'raw-loader'
+            },
+            {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader']
+            },
+            {
+                test: /\.(png|svg|jpg|gif)$/,
+                use: [
+                    'file-loader',
+                ],
+            },
+            {
+                test: /\.js$/,
+                exclude: /(node_modules)/,
+                use: 'babel-loader'
+            }
+        ]
+    }
 };
+
     
 ```
 .babelrc i rotmappa:
@@ -434,8 +436,7 @@ package.json
     "build": "webpack --config webpack.config.js",
     "dev": "webpack-dev-server --config webpack.config.js",
     "check": "es-check es5 ./dist/main.bundle.js"
-  },
-
+},
 ```
 prøv å kjøre `npm run check`--> får feil.
 <br />
@@ -447,7 +448,7 @@ Kjør `npm run check`--> success
 <br/>
 
 ## Plugins
-Der loaders brukes til å gjennomføre en spesifikk transformasjon på visse moduler/filer bruker man webpack plugins for å gjennomføre et bredere spekter av oppgaver. For eksempel bundle-optimaliseringer, ressurshåndtering og miljøvariabler trenger man plugins for å fikse. Mange av disse pluginsene kommer allerede med i en webpack installasjon og brukes uten at man nødvendigvis tenker over at det er en plugin. 
+Der loaders brukes til å gjennomføre en spesifikk transformasjon på visse moduler/filer bruker man webpack plugins for å gjennomføre et bredere spekter av oppgaver. For eksempel bundle-optimaliseringer, ressurshåndtering og miljøvariabler trenger man plugins for å fikse. Mange av disse pluginsene kommer allerede med i en webpack-installasjon og brukes uten at man nødvendigvis tenker over at det er en plugin. 
 
 ### Html Webpack Plugin
 Selv om html-filen som vi har laget selv fungerer bra, er det enklere om webpack genererer en for oss. HtmlWebpackPlugin genererer rett og slett en standard html-fil med en script tag som linker til bundlen vår, og putter den i output mappen.
@@ -463,24 +464,31 @@ module.exports = {
 ```
 Dersom vi nå bygger prosjektet vårt med `npm run build`, ser vi at en html-fil også har dukket opp i mappen `/dist`.
 
-#### 🏆Oppgave
-Få dev-serveren til å benytte den genererte html-filen.
-
 Dersom dev-serveren nå benytter den genererte filen, vil vi oppleve at javascript feiler, ettersom den ser etter et element i DOM'en som ikke finnes. Vi løser dette ved å sette html-filen vår som en template. Da vil webpack ta utgangspunkt i denne, og legge til en referanse i javascript-bundlen.
 ```
 new HtmlWebpackPlugin({
-            template: './src/index.html'
-        })
+    template: './src/index.html'
+})
 ```
 Husk å fjerne script-taggen fra `src/index.html` slik at vi ikke laster inn vår javascript to ganger.  
 HtmlWebpackPlugin kan gjøre veldig mye mer enn vist her, sjekk ut https://github.com/jantimon/html-webpack-plugin for et innblikk i det den kan gjøre.
 
 ### Bundle Analyzer
 En annen nyttig plugin er [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer). Vi har sett hvordan webpack kan minimize bundlen vår slik at den egner seg bedre for produksjon. Likevel kan det hende at vi fortsatt sitter igjen med en stor bundle. Webpack-bundle-analyzer er et verktøy som lar oss se hvilke pakker bundlen vår inneholder, og hvor stor plass de faktisk tar.
-Pluginen starter automatisk i en egen fane ved `npm start` etter at du har lagt det til på denne måten i webpack konfigurasjonen:
-```
+Pluginen starter automatisk i en egen fane ved `npm start` etter at du har installert og konfigurert den.
+
+#### 🏆Oppgave
+Legg til `webpack-bundle-analyzer` i prosjektet og konfigurer den i webpack-konfigen.
+
+<details>
+    <summary>🚨Løsningsforslag</summary>
+Etter å ha installert pluginen med `npm i webpack-bundle-analyzer -D` oppdaterer du `webpack.config.js` med følgende verdier:
+
+```js
+// Importer webpack-bundle-analyzer øverst i fila
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
+// Legg til pluginen i plugin-lista
 module.exports = {
   plugins: [
     new BundleAnalyzerPlugin()
@@ -488,6 +496,9 @@ module.exports = {
 }
 ```
 Vi kan se at biblioteket lodash tar veldig mye av den totale bundle størrelsen. Om vi går inn i `src/utils.js` og endrer importen av lodash til å kunne ta inn string delen av biblioteket(`import _ from 'lodash/string';`), kan vi se med webpack-bundle-analyzer at lodash nå tar opp langt mindre plass.
+
+</details>
+<br/>
 
 
 ## React
