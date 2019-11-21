@@ -98,6 +98,7 @@ Eksempel på dev-server oppsett:
 
 #### 🏆Oppgave
 Sett opp dev-serveren slik at den får med seg endringer både i javascript og htmlen vår. Refresh nettleseren (localhost-fanen) og se at du igjen får velkomstmeldingen.
+OBS! Husk å endre script-tagen i `index.html` til å peke på "main.bundle.js" _istedenfor_ en releativ path fra /src. 
 
 <details>
   <summary>🚨Løsningsforslag</summary>
