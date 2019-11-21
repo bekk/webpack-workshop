@@ -562,7 +562,7 @@ Lag en typescript fil som eksporterer en funksjon, importer den i javascript fil
 <details>
 <summary>🚨Løsningsforslag</summary>
 
-Opprett tila `tsconfig.json` og legg til følgende:
+Legg til følgende i `tsconfig.json`:
 ```json
 {
   "compilerOptions": {
